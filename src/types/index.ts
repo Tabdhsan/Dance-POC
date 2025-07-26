@@ -11,7 +11,8 @@ export interface SocialLinks {
 export interface User {
   id: string;
   name: string;
-  role: 'dancer' | 'choreographer' | 'both';
+  username: string;
+  role: 'dancer' | 'choreographer' | 'both'; // TODO: just choreographer flag
   pronouns?: string;
   bio?: string;
   profilePhoto?: string;
@@ -32,6 +33,7 @@ export interface DanceClass {
   title: string;
   choreographerId: string;
   choreographerName: string;
+  choreographerUsername: string;
   style: string[];
   dateTime: string;
   location: string;
@@ -40,7 +42,7 @@ export interface DanceClass {
   videoLink?: string;
   rsvpLink?: string;
   flyer?: string;
-  status: 'active' | 'cancelled' | 'featured';
+  status: 'active' | 'cancelled' | 'featured' | 'submitted';
 }
 
 export interface UserPreferences {

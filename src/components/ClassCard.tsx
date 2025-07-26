@@ -11,7 +11,8 @@ import {
   User
 } from 'lucide-react';
 import type { ClassCardProps } from '@/types';
-import { cn } from '@/lib/utils';
+import { cn, placeholderImage } from '@/lib/utils';
+import { useNavigate } from 'react-router-dom';
 
 export const ClassCard: React.FC<ClassCardProps> = ({
   danceClass,
@@ -22,6 +23,7 @@ export const ClassCard: React.FC<ClassCardProps> = ({
   onChoreographerClick,
   onViewDetails
 }) => {
+  const navigate = useNavigate();
   // Format date and time
   const formatDateTime = (dateTimeString: string) => {
     const date = new Date(dateTimeString);
@@ -54,12 +56,6 @@ export const ClassCard: React.FC<ClassCardProps> = ({
   const handleAttendingClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     onAttendingToggle?.(danceClass.id);
-  };
-
-  // Handle choreographer click
-  const handleChoreographerClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onChoreographerClick?.(danceClass.choreographerId);
   };
 
   // Handle RSVP click
@@ -98,7 +94,7 @@ export const ClassCard: React.FC<ClassCardProps> = ({
         )}>
           {/* Unsplash placeholder image */}
           <img
-            src={`https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=400&h=300&fit=crop&crop=center&auto=format&q=80`}
+            src={placeholderImage}
             alt="Dance class placeholder"
             className="w-full h-full object-cover opacity-60"
             onError={(e) => {
@@ -179,7 +175,7 @@ export const ClassCard: React.FC<ClassCardProps> = ({
             {danceClass.title}
           </h3>
           <button
-            onClick={handleChoreographerClick}
+            onClick={() => navigate(`/choreographer/${danceClass.choreographerUsername}`)}
             className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
           >
             <User className="h-3 w-3" />

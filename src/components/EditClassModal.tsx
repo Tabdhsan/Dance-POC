@@ -6,16 +6,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { 
   X, 
-  Calendar, 
-  MapPin, 
   DollarSign, 
   Link,
   Image,
-  Save,
-  Trash2
+  Save
 } from 'lucide-react';
-import { useUser } from '@/contexts/UserContext';
-import { useClasses } from '@/contexts/ClassContext';
 import type { DanceClass } from '@/types';
 import { cn } from '@/lib/utils';
 
@@ -40,10 +35,6 @@ export const EditClassModal: React.FC<EditClassModalProps> = ({
   onClassUpdated,
   danceClass
 }) => {
-  const { state: userState } = useUser();
-  const { state: classState } = useClasses();
-  const { currentUser } = userState;
-
   // Form state
   const [formData, setFormData] = useState({
     title: '',
