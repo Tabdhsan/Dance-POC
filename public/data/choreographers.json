@@ -1,0 +1,69 @@
+{
+  "choreographers": [
+    {
+      "id": "choreo-001",
+      "name": "Alex Rivera",
+      "role": "choreographer",
+      "pronouns": "she/her",
+      "bio": "Contemporary dance artist with 10+ years of experience in performance and teaching. Specializes in emotional storytelling through movement and creating safe spaces for artistic expression. Former company member of several contemporary dance companies including Axis Dance Theatre and Alvin Ailey American Dance Theater.",
+      "profilePhoto": "/images/alex-rivera.jpg",
+      "website": "https://alexrivera.dance",
+      "socialLinks": {
+        "instagram": "@alexrivera_dance",
+        "youtube": "AlexRiveraDance",
+        "website": "https://alexrivera.dance"
+      },
+      "featuredVideo": "https://youtube.com/watch?v=example1",
+      "achievements": [
+        "Alvin Ailey American Dance Theater Company Member (2018-2022)",
+        "Winner - Contemporary Choreography Award 2023",
+        "Featured in Dance Magazine 'Rising Stars' 2021"
+      ],
+      "teachingStyle": "Alex focuses on creating an inclusive environment where dancers can explore their emotional range through movement. Her classes emphasize technique while encouraging personal artistic expression.",
+      "upcomingClasses": ["class-001", "class-003", "class-006"]
+    },
+    {
+      "id": "choreo-002", 
+      "name": "Jordan Kim",
+      "role": "choreographer",
+      "pronouns": "he/him",
+      "bio": "Hip-hop choreographer and cultural educator dedicated to preserving street dance authenticity while pushing creative boundaries. Trained in Los Angeles and New York, now sharing knowledge through workshops and battles. Specializes in multiple hip-hop styles including popping, locking, breaking, and house dance.",
+      "profilePhoto": "/images/jordan-kim.jpg",
+      "website": "https://jordankim.dance",
+      "socialLinks": {
+        "instagram": "@jordankim_hiphop",
+        "tiktok": "@jordankim_moves",
+        "youtube": "JordanKimDance"
+      },
+      "featuredVideo": "https://youtube.com/watch?v=example2",
+      "achievements": [
+        "World Hip-Hop Dance Championship Finalist 2022",
+        "Choreographer for major music videos and commercials",
+        "Founder of 'Authentic Movement' workshop series"
+      ],
+      "teachingStyle": "Jordan brings authentic street dance culture to every class, emphasizing the history and community aspects of hip-hop while teaching cutting-edge choreography. His classes are high-energy and welcoming to all skill levels.",
+      "upcomingClasses": ["class-002", "class-005", "class-007", "class-009"]
+    },
+    {
+      "id": "choreo-003",
+      "name": "Maria Santos",
+      "role": "choreographer", 
+      "pronouns": "she/her",
+      "bio": "Classically trained ballet instructor and modern dance choreographer with over 15 years of teaching experience. Graduated from the Royal Academy of Dance and has performed with prestigious ballet companies worldwide. Now focuses on making classical dance accessible to adult beginners while maintaining technical excellence.",
+      "profilePhoto": "/images/maria-santos.jpg",
+      "website": "https://mariasantos.ballet",
+      "socialLinks": {
+        "instagram": "@mariasantos_ballet",
+        "youtube": "MariaSantosBallet"
+      },
+      "featuredVideo": "https://youtube.com/watch?v=example3",
+      "achievements": [
+        "Royal Academy of Dance Graduate with Distinction",
+        "Principal Dancer - National Ballet Company (2010-2018)",
+        "Certified in RAD Teaching Method"
+      ],
+      "teachingStyle": "Maria creates a supportive environment for dancers of all ages and backgrounds to discover the beauty of classical dance. Her classes focus on proper technique, musicality, and the joy of movement.",
+      "upcomingClasses": ["class-004", "class-008", "class-010"]
+    }
+  ]
+}

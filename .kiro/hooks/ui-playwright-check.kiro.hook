@@ -1,0 +1,22 @@
+{
+  "enabled": true,
+  "name": "UI Playwright Check",
+  "description": "Automatically runs Playwright tests to check for console errors and verify page loading when UI-related files are modified",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "src/components/**/*.tsx",
+      "src/pages/**/*.tsx",
+      "src/App.tsx",
+      "src/main.tsx",
+      "src/index.css",
+      "src/App.css",
+      "index.html"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "UI files have been modified. Please use the Playwright MCP to run tests that check for console errors and verify that the page is loading correctly. Focus on testing the main application routes and ensuring no JavaScript errors are present in the browser console.\n\nBefore running npm run dev, first check to make sure a server isn't already launched"
+  }
+}

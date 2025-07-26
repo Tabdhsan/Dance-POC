@@ -1,0 +1,253 @@
+// ClassCard component for displaying dance class information
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { 
+  Calendar, 
+  MapPin, 
+  DollarSign, 
+  Heart, 
+  UserCheck, 
+  ExternalLink,
+  User
+} from 'lucide-react';
+import type { ClassCardProps } from '@/types';
+import { cn } from '@/lib/utils';
+
+export const ClassCard: React.FC<ClassCardProps> = ({
+  danceClass,
+  isInterested = false,
+  isAttending = false,
+  onInterestToggle,
+  onAttendingToggle,
+  onChoreographerClick,
+  onViewDetails
+}) => {
+  // Format date and time
+  const formatDateTime = (dateTimeString: string) => {
+    const date = new Date(dateTimeString);
+    const dateOptions: Intl.DateTimeFormatOptions = {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric'
+    };
+    const timeOptions: Intl.DateTimeFormatOptions = {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    };
+    
+    return {
+      date: date.toLocaleDateString('en-US', dateOptions),
+      time: date.toLocaleDateString('en-US', timeOptions)
+    };
+  };
+
+  const { date, time } = formatDateTime(danceClass.dateTime);
+
+  // Handle interest toggle
+  const handleInterestClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onInterestToggle?.(danceClass.id);
+  };
+
+  // Handle attending toggle
+  const handleAttendingClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onAttendingToggle?.(danceClass.id);
+  };
+
+  // Handle choreographer click
+  const handleChoreographerClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onChoreographerClick?.(danceClass.choreographerId);
+  };
+
+  // Handle RSVP click
+  const handleRSVPClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (danceClass.rsvpLink) {
+      window.open(danceClass.rsvpLink, '_blank');
+    }
+  };
+
+  return (
+    <div className={cn(
+      "bg-card text-card-foreground rounded-lg border shadow-sm hover:shadow-md transition-shadow duration-200",
+      danceClass.status === 'cancelled' && "opacity-60",
+      danceClass.status === 'featured' && "ring-2 ring-primary/20"
+    )}>
+      {/* Class Image/Flyer */}
+      <div className="relative">
+        {danceClass.flyer ? (
+          <img
+            src={danceClass.flyer}
+            alt={`${danceClass.title} flyer`}
+            className="w-full h-48 object-cover rounded-t-lg"
+            onError={(e) => {
+              // Fallback to placeholder if image fails to load
+              e.currentTarget.style.display = 'none';
+              e.currentTarget.nextElementSibling?.classList.remove('hidden');
+            }}
+          />
+        ) : null}
+        
+        {/* Placeholder when no image or image fails */}
+        <div className={cn(
+          "w-full h-48 bg-muted rounded-t-lg flex items-center justify-center relative overflow-hidden",
+          danceClass.flyer && "hidden"
+        )}>
+          {/* Unsplash placeholder image */}
+          <img
+            src={`https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=400&h=300&fit=crop&crop=center&auto=format&q=80`}
+            alt="Dance class placeholder"
+            className="w-full h-full object-cover opacity-60"
+            onError={(e) => {
+              // Fallback to icon if Unsplash fails
+              e.currentTarget.style.display = 'none';
+              e.currentTarget.nextElementSibling?.classList.remove('hidden');
+            }}
+          />
+          
+          {/* Fallback icon overlay */}
+          <div className="absolute inset-0 flex items-center justify-center text-center text-muted-foreground bg-muted/80 hidden">
+            <div>
+              <Calendar className="h-12 w-12 mx-auto mb-2" />
+              <p className="text-sm font-medium">{danceClass.title}</p>
+            </div>
+          </div>
+          
+          {/* Class title overlay on Unsplash image */}
+          <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+            <div className="text-center text-white">
+              <Calendar className="h-12 w-12 mx-auto mb-2" />
+              <p className="text-sm font-medium">{danceClass.title}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Status badges */}
+        <div className="absolute top-3 left-3 flex gap-2">
+          {danceClass.status === 'featured' && (
+            <span className="bg-primary text-primary-foreground text-xs font-medium px-2 py-1 rounded-full">
+              Featured
+            </span>
+          )}
+          {danceClass.status === 'cancelled' && (
+            <span className="bg-destructive text-destructive-foreground text-xs font-medium px-2 py-1 rounded-full">
+              Cancelled
+            </span>
+          )}
+        </div>
+
+        {/* Interest/Attending buttons */}
+        <div className="absolute top-2 right-2 flex gap-1">
+          <Button
+            variant="ghost"
+            size="sm"
+            className={cn(
+              "h-10 w-10 p-0 bg-background/80 backdrop-blur-sm hover:bg-background/90 touch-manipulation",
+              isInterested && "text-red-500 hover:text-red-600"
+            )}
+            onClick={handleInterestClick}
+            title={isInterested ? "Remove from interested" : "Mark as interested"}
+            aria-label={isInterested ? "Remove from interested" : "Mark as interested"}
+          >
+            <Heart className={cn("h-5 w-5", isInterested && "fill-current")} />
+          </Button>
+          
+          <Button
+            variant="ghost"
+            size="sm"
+            className={cn(
+              "h-10 w-10 p-0 bg-background/80 backdrop-blur-sm hover:bg-background/90 touch-manipulation",
+              isAttending && "text-green-500 hover:text-green-600"
+            )}
+            onClick={handleAttendingClick}
+            title={isAttending ? "Remove from attending" : "Mark as attending"}
+            aria-label={isAttending ? "Remove from attending" : "Mark as attending"}
+          >
+            <UserCheck className={cn("h-5 w-5", isAttending && "fill-current")} />
+          </Button>
+        </div>
+      </div>
+
+      {/* Card Content */}
+      <div className="p-4 space-y-3">
+        {/* Title and Choreographer */}
+        <div>
+          <h3 className="font-semibold text-lg leading-tight mb-1">
+            {danceClass.title}
+          </h3>
+          <button
+            onClick={handleChoreographerClick}
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+          >
+            <User className="h-3 w-3" />
+            {danceClass.choreographerName}
+          </button>
+        </div>
+
+        {/* Dance Styles */}
+        <div className="flex flex-wrap gap-1">
+          {danceClass.style.map((style, index) => (
+            <span
+              key={index}
+              className="bg-secondary text-secondary-foreground text-xs font-medium px-2 py-1 rounded-full"
+            >
+              {style}
+            </span>
+          ))}
+        </div>
+
+        {/* Date, Time, and Location */}
+        <div className="space-y-2 text-sm text-muted-foreground">
+          <div className="flex items-center gap-2">
+            <Calendar className="h-4 w-4" />
+            <span>{date} at {time}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <MapPin className="h-4 w-4" />
+            <span className="truncate">{danceClass.location}</span>
+          </div>
+          {danceClass.price && (
+            <div className="flex items-center gap-2">
+              <DollarSign className="h-4 w-4" />
+              <span>${danceClass.price}</span>
+            </div>
+          )}
+        </div>
+
+        {/* Description */}
+        <p className="text-sm text-muted-foreground line-clamp-2">
+          {danceClass.description}
+        </p>
+
+        {/* Action Buttons */}
+        <div className="flex gap-2 pt-2">
+          {danceClass.rsvpLink && danceClass.status !== 'cancelled' && (
+            <Button
+              onClick={handleRSVPClick}
+              className="flex-1 min-h-[44px] touch-manipulation"
+              size="sm"
+            >
+              <ExternalLink className="h-4 w-4 mr-2" />
+              RSVP
+            </Button>
+          )}
+          
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex-1 min-h-[44px] touch-manipulation"
+            onClick={(e) => {
+              e.stopPropagation();
+              onViewDetails?.(danceClass);
+            }}
+          >
+            View Details
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};
