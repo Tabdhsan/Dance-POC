@@ -134,14 +134,8 @@ export const useChoreographerPreferences = () => {
 export const useAppSettings = () => {
   const { 
     state: preferencesState, 
-    updatePreferredView, 
     updateFilters 
   } = usePreferences();
-
-  // Update view with persistence
-  const handleViewChange = useCallback((view: 'list' | 'calendar') => {
-    updatePreferredView(view);
-  }, [updatePreferredView]);
 
   // Update filters with persistence
   const handleFiltersChange = useCallback((filters: typeof preferencesState.appSettings.filters) => {
@@ -149,9 +143,7 @@ export const useAppSettings = () => {
   }, [updateFilters]);
 
   return {
-    preferredView: preferencesState.appSettings.preferredView,
     filters: preferencesState.appSettings.filters,
-    updateView: handleViewChange,
     updateFilters: handleFiltersChange
   };
 };

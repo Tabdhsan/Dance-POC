@@ -53,7 +53,6 @@ export interface UserPreferences {
 }
 
 export interface AppSettings {
-  preferredView: 'list' | 'calendar';
   filters: {
     styles: string[];
     choreographers: string[];
@@ -110,4 +109,3 @@ export interface FilterOptions {
 // Utility types
 export type UserRole = User['role'];
 export type ClassStatus = DanceClass['status'];
-export type ViewMode = AppSettings['preferredView'];

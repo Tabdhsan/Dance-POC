@@ -161,7 +161,6 @@ interface AppState {
 
 // Key: 'dance-app-settings'
 {
-  preferredView: 'list' | 'calendar';
   filters: {
     styles: string[];
     choreographers: string[];
