@@ -110,14 +110,12 @@ export const NavigationBar: React.FC = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
-                {isChoreographer() && (
-                  <DropdownMenuItem asChild>
-                    <Link to={`/choreographer/${currentUser?.id}`} className="flex items-center space-x-2">
-                      <User className="h-4 w-4" />
-                      <span>My Profile</span>
-                    </Link>
-                  </DropdownMenuItem>
-                )}
+                <DropdownMenuItem asChild>
+                  <Link to="/profile" className="flex items-center space-x-2">
+                    <User className="h-4 w-4" />
+                    <span>My Profile</span>
+                  </Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link to="/settings" className="flex items-center space-x-2">
                     <Settings className="h-4 w-4" />
@@ -180,16 +178,14 @@ export const NavigationBar: React.FC = () => {
                   {currentUser?.name || 'User'} ({currentUser?.role || 'unknown'})
                 </div>
                 
-                {isChoreographer() && (
-                  <Link
-                    to={`/choreographer/${currentUser?.id}`}
-                    onClick={closeMobileMenu}
-                    className="flex items-center space-x-3 px-4 py-3 rounded-md text-base font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors touch-manipulation min-h-[44px]"
-                  >
-                    <User className="h-5 w-5" />
-                    <span>My Profile</span>
-                  </Link>
-                )}
+                <Link
+                  to="/profile"
+                  onClick={closeMobileMenu}
+                  className="flex items-center space-x-3 px-4 py-3 rounded-md text-base font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors touch-manipulation min-h-[44px]"
+                >
+                  <User className="h-5 w-5" />
+                  <span>My Profile</span>
+                </Link>
                 
                 <Link
                   to="/settings"

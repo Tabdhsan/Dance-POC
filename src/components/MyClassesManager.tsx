@@ -1,5 +1,5 @@
 // My Classes Manager component for choreographer class management
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { 
   Plus, 
@@ -9,16 +9,28 @@ import {
   MapPin, 
   Clock,
   DollarSign,
-  Users
+  Users,
+  Star
 } from 'lucide-react';
 import { useUser } from '@/contexts/UserContext';
 import { useClasses } from '@/contexts/ClassContext';
+import { AddClassModal } from './AddClassModal';
+import { EditClassModal } from './EditClassModal';
+import { ConfirmModal } from './ConfirmModal';
 import type { DanceClass } from '@/types';
+import { cn } from '@/lib/utils';
 
 export const MyClassesManager: React.FC = () => {
   const { state: userState } = useUser();
-  const { state: classState } = useClasses();
+  const { state: classState, addClass, updateClass, deleteClass, updateClassStatus } = useClasses();
   const { currentUser } = userState;
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedClassForEdit, setSelectedClassForEdit] = useState<DanceClass | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+  const [selectedClassForAction, setSelectedClassForAction] = useState<DanceClass | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Filter classes to show only those created by current user
   const myClasses = useMemo(() => {
@@ -58,25 +70,79 @@ export const MyClassesManager: React.FC = () => {
     }
   };
 
-  // Placeholder handlers for POC
+  // Handle add new class
   const handleAddNewClass = () => {
-    // Placeholder functionality for POC
-    alert('Add New Class functionality would be implemented here');
+    setIsAddModalOpen(true);
+  };
+
+  const handleClassAdded = (newClass: DanceClass) => {
+    addClass(newClass);
+  };
+
+  const handleClassUpdated = (updatedClass: DanceClass) => {
+    updateClass(updatedClass);
   };
 
   const handleEditClass = (classId: string) => {
-    // Placeholder functionality for POC
-    alert(`Edit class ${classId} functionality would be implemented here`);
+    const classToEdit = myClasses.find(cls => cls.id === classId);
+    if (classToEdit) {
+      setSelectedClassForEdit(classToEdit);
+      setIsEditModalOpen(true);
+    }
   };
 
   const handleCancelClass = (classId: string) => {
-    // Placeholder functionality for POC
-    alert(`Cancel class ${classId} functionality would be implemented here`);
+    const classToCancel = myClasses.find(cls => cls.id === classId);
+    if (classToCancel) {
+      setSelectedClassForAction(classToCancel);
+      setIsCancelModalOpen(true);
+    }
   };
 
   const handleDeleteClass = (classId: string) => {
-    // Placeholder functionality for POC
-    alert(`Delete class ${classId} functionality would be implemented here`);
+    const classToDelete = myClasses.find(cls => cls.id === classId);
+    if (classToDelete) {
+      setSelectedClassForAction(classToDelete);
+      setIsDeleteModalOpen(true);
+    }
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!selectedClassForAction) return;
+    
+    setIsLoading(true);
+    try {
+      deleteClass(selectedClassForAction.id);
+      setIsDeleteModalOpen(false);
+      setSelectedClassForAction(null);
+    } catch (error) {
+      console.error('Error deleting class:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleConfirmCancel = async () => {
+    if (!selectedClassForAction) return;
+    
+    setIsLoading(true);
+    try {
+      updateClassStatus(selectedClassForAction.id, 'cancelled');
+      setIsCancelModalOpen(false);
+      setSelectedClassForAction(null);
+    } catch (error) {
+      console.error('Error cancelling class:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleToggleFeatured = (classId: string) => {
+    const classToToggle = myClasses.find(cls => cls.id === classId);
+    if (classToToggle) {
+      const newStatus = classToToggle.status === 'featured' ? 'active' : 'featured';
+      updateClassStatus(classId, newStatus);
+    }
   };
 
   if (!currentUser) {
@@ -216,6 +282,25 @@ export const MyClassesManager: React.FC = () => {
                       <span>Edit</span>
                     </Button>
                     
+                    {/* Featured Toggle */}
+                    {danceClass.status !== 'cancelled' && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleToggleFeatured(danceClass.id)}
+                        className={cn(
+                          "flex items-center space-x-1 flex-1 lg:flex-none min-h-[44px] touch-manipulation",
+                          danceClass.status === 'featured' 
+                            ? "text-yellow-600 hover:text-yellow-700 hover:bg-yellow-50 border-yellow-300" 
+                            : "text-muted-foreground hover:text-foreground"
+                        )}
+                      >
+                        <Star className={cn("h-4 w-4", danceClass.status === 'featured' && "fill-current")} />
+                        <span>{danceClass.status === 'featured' ? 'Unfeature' : 'Feature'}</span>
+                      </Button>
+                    )}
+                    
+                    {/* Cancel Button */}
                     {danceClass.status !== 'cancelled' && (
                       <Button
                         variant="outline"
@@ -228,6 +313,7 @@ export const MyClassesManager: React.FC = () => {
                       </Button>
                     )}
                     
+                    {/* Delete Button */}
                     <Button
                       variant="outline"
                       size="sm"
@@ -244,6 +330,54 @@ export const MyClassesManager: React.FC = () => {
           })}
         </div>
       )}
+
+      {/* Add Class Modal */}
+      <AddClassModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onClassAdded={handleClassAdded}
+      />
+
+      {/* Edit Class Modal */}
+      <EditClassModal
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          setIsEditModalOpen(false);
+          setSelectedClassForEdit(null);
+        }}
+        onClassUpdated={handleClassUpdated}
+        danceClass={selectedClassForEdit}
+      />
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => {
+          setIsDeleteModalOpen(false);
+          setSelectedClassForAction(null);
+        }}
+        onConfirm={handleConfirmDelete}
+        title="Delete Class"
+        message={`Are you sure you want to delete "${selectedClassForAction?.title}"? This action cannot be undone.`}
+        confirmText="Delete Class"
+        variant="delete"
+        isLoading={isLoading}
+      />
+
+      {/* Cancel Confirmation Modal */}
+      <ConfirmModal
+        isOpen={isCancelModalOpen}
+        onClose={() => {
+          setIsCancelModalOpen(false);
+          setSelectedClassForAction(null);
+        }}
+        onConfirm={handleConfirmCancel}
+        title="Cancel Class"
+        message={`Are you sure you want to cancel "${selectedClassForAction?.title}"? This will mark the class as cancelled and notify any interested students.`}
+        confirmText="Cancel Class"
+        variant="cancel"
+        isLoading={isLoading}
+      />
     </div>
   );
 };

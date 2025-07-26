@@ -1,4 +1,5 @@
 // Core TypeScript interfaces for the Dance Class Management App
+// Updated to ensure proper exports
 
 export interface SocialLinks {
   instagram?: string;
@@ -22,6 +23,10 @@ export interface User {
   upcomingClasses?: string[];
 }
 
+export interface Choreographer extends User {
+  // Add choreographer-specific fields here if needed in the future
+}
+
 export interface DanceClass {
   id: string;
   title: string;
@@ -32,6 +37,7 @@ export interface DanceClass {
   location: string;
   description: string;
   price?: number;
+  videoLink?: string;
   rsvpLink?: string;
   flyer?: string;
   status: 'active' | 'cancelled' | 'featured';

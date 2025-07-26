@@ -7,6 +7,60 @@ import {
   getUpcomingClasses 
 } from '@/utils/dataLoader';
 
+// Apply filters to classes (moved to top-level for reducer access)
+const applyFiltersToClasses = (
+  classes: DanceClass[],
+  filters: FilterOptions,
+  searchQuery: string = ''
+): DanceClass[] => {
+  let filtered = [...classes];
+
+  // Apply search query
+  if (searchQuery.trim()) {
+    const query = searchQuery.toLowerCase();
+    filtered = filtered.filter(cls =>
+      cls.title.toLowerCase().includes(query) ||
+      cls.description.toLowerCase().includes(query) ||
+      cls.choreographerName.toLowerCase().includes(query) ||
+      cls.style.some(style => style.toLowerCase().includes(query)) ||
+      cls.location.toLowerCase().includes(query)
+    );
+  }
+
+  // Apply style filters
+  if (filters.styles.length > 0) {
+    filtered = filtered.filter(cls =>
+      cls.style.some(style => filters.styles.includes(style))
+    );
+  }
+
+  // Apply choreographer filters
+  if (filters.choreographers.length > 0) {
+    filtered = filtered.filter(cls =>
+      filters.choreographers.includes(cls.choreographerId) ||
+      filters.choreographers.includes(cls.choreographerName)
+    );
+  }
+
+  // Apply studio/location filters
+  if (filters.studios.length > 0) {
+    filtered = filtered.filter(cls =>
+      filters.studios.some(studio => cls.location.toLowerCase().includes(studio.toLowerCase()))
+    );
+  }
+
+  // Apply date range filter if provided
+  if (filters.dateRange) {
+    const { start, end } = filters.dateRange;
+    filtered = filtered.filter(cls => {
+      const classDate = new Date(cls.dateTime);
+      return classDate >= start && classDate <= end;
+    });
+  }
+
+  return filtered;
+};
+
 // Class state interface
 interface ClassState {
   classes: DanceClass[];
@@ -29,7 +83,11 @@ type ClassAction =
   | { type: 'SET_UPCOMING_CLASSES'; payload: DanceClass[] }
   | { type: 'SET_SEARCH_QUERY'; payload: string }
   | { type: 'SET_FILTERS'; payload: FilterOptions }
-  | { type: 'CLEAR_FILTERS' };
+  | { type: 'CLEAR_FILTERS' }
+  | { type: 'ADD_CLASS'; payload: DanceClass }
+  | { type: 'UPDATE_CLASS'; payload: DanceClass }
+  | { type: 'DELETE_CLASS'; payload: string }
+  | { type: 'UPDATE_CLASS_STATUS'; payload: { classId: string; status: DanceClass['status'] } };
 
 // Initial state
 const initialState: ClassState = {
@@ -86,6 +144,64 @@ const classReducer = (state: ClassState, action: ClassAction): ClassState => {
         filteredClasses: state.classes
       };
     
+    case 'ADD_CLASS':
+      const newClasses = [...state.classes, action.payload];
+      return {
+        ...state,
+        classes: newClasses,
+        filteredClasses: applyFiltersToClasses(newClasses, state.activeFilters, state.searchQuery),
+        upcomingClasses: newClasses.filter(cls => {
+          const classDate = new Date(cls.dateTime);
+          const now = new Date();
+          return classDate > now && cls.status !== 'cancelled';
+        })
+      };
+    
+    case 'UPDATE_CLASS':
+      const updatedClasses = state.classes.map(cls => 
+        cls.id === action.payload.id ? action.payload : cls
+      );
+      return {
+        ...state,
+        classes: updatedClasses,
+        filteredClasses: applyFiltersToClasses(updatedClasses, state.activeFilters, state.searchQuery),
+        upcomingClasses: updatedClasses.filter(cls => {
+          const classDate = new Date(cls.dateTime);
+          const now = new Date();
+          return classDate > now && cls.status !== 'cancelled';
+        })
+      };
+    
+    case 'DELETE_CLASS':
+      const remainingClasses = state.classes.filter(cls => cls.id !== action.payload);
+      return {
+        ...state,
+        classes: remainingClasses,
+        filteredClasses: applyFiltersToClasses(remainingClasses, state.activeFilters, state.searchQuery),
+        upcomingClasses: remainingClasses.filter(cls => {
+          const classDate = new Date(cls.dateTime);
+          const now = new Date();
+          return classDate > now && cls.status !== 'cancelled';
+        })
+      };
+    
+    case 'UPDATE_CLASS_STATUS':
+      const statusUpdatedClasses = state.classes.map(cls => 
+        cls.id === action.payload.classId 
+          ? { ...cls, status: action.payload.status }
+          : cls
+      );
+      return {
+        ...state,
+        classes: statusUpdatedClasses,
+        filteredClasses: applyFiltersToClasses(statusUpdatedClasses, state.activeFilters, state.searchQuery),
+        upcomingClasses: statusUpdatedClasses.filter(cls => {
+          const classDate = new Date(cls.dateTime);
+          const now = new Date();
+          return classDate > now && cls.status !== 'cancelled';
+        })
+      };
+    
     default:
       return state;
   }
@@ -101,6 +217,10 @@ interface ClassContextType {
   clearFilters: () => void;
   refreshClasses: () => Promise<void>;
   getClassById: (id: string) => DanceClass | undefined;
+  addClass: (danceClass: DanceClass) => void;
+  updateClass: (danceClass: DanceClass) => void;
+  deleteClass: (classId: string) => void;
+  updateClassStatus: (classId: string, status: DanceClass['status']) => void;
 }
 
 // Create context
@@ -144,60 +264,6 @@ export const ClassProvider: React.FC<ClassProviderProps> = ({ children }) => {
       console.error('Failed to initialize classes:', error);
       dispatch({ type: 'SET_ERROR', payload: 'Failed to load class data' });
     }
-  };
-
-  // Apply filters to classes
-  const applyFiltersToClasses = (
-    classes: DanceClass[], 
-    filters: FilterOptions, 
-    searchQuery: string = ''
-  ): DanceClass[] => {
-    let filtered = [...classes];
-    
-    // Apply search query
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(cls => 
-        cls.title.toLowerCase().includes(query) ||
-        cls.description.toLowerCase().includes(query) ||
-        cls.choreographerName.toLowerCase().includes(query) ||
-        cls.style.some(style => style.toLowerCase().includes(query)) ||
-        cls.location.toLowerCase().includes(query)
-      );
-    }
-    
-    // Apply style filters
-    if (filters.styles.length > 0) {
-      filtered = filtered.filter(cls => 
-        cls.style.some(style => filters.styles.includes(style))
-      );
-    }
-    
-    // Apply choreographer filters
-    if (filters.choreographers.length > 0) {
-      filtered = filtered.filter(cls => 
-        filters.choreographers.includes(cls.choreographerId) ||
-        filters.choreographers.includes(cls.choreographerName)
-      );
-    }
-    
-    // Apply studio/location filters
-    if (filters.studios.length > 0) {
-      filtered = filtered.filter(cls => 
-        filters.studios.some(studio => cls.location.toLowerCase().includes(studio.toLowerCase()))
-      );
-    }
-    
-    // Apply date range filter if provided
-    if (filters.dateRange) {
-      const { start, end } = filters.dateRange;
-      filtered = filtered.filter(cls => {
-        const classDate = new Date(cls.dateTime);
-        return classDate >= start && classDate <= end;
-      });
-    }
-    
-    return filtered;
   };
 
   // Search classes by query
@@ -268,6 +334,26 @@ export const ClassProvider: React.FC<ClassProviderProps> = ({ children }) => {
     return state.classes.find(cls => cls.id === id);
   };
 
+  // Add new class
+  const addClass = (danceClass: DanceClass) => {
+    dispatch({ type: 'ADD_CLASS', payload: danceClass });
+  };
+
+  // Update existing class
+  const updateClass = (danceClass: DanceClass) => {
+    dispatch({ type: 'UPDATE_CLASS', payload: danceClass });
+  };
+
+  // Delete class
+  const deleteClass = (classId: string) => {
+    dispatch({ type: 'DELETE_CLASS', payload: classId });
+  };
+
+  // Update class status
+  const updateClassStatus = (classId: string, status: DanceClass['status']) => {
+    dispatch({ type: 'UPDATE_CLASS_STATUS', payload: { classId, status } });
+  };
+
   const contextValue: ClassContextType = {
     state,
     searchClasses: handleSearchClasses,
@@ -276,7 +362,11 @@ export const ClassProvider: React.FC<ClassProviderProps> = ({ children }) => {
     applyFilters,
     clearFilters,
     refreshClasses,
-    getClassById
+    getClassById,
+    addClass,
+    updateClass,
+    deleteClass,
+    updateClassStatus
   };
 
   return (

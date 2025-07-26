@@ -2,13 +2,29 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { usePreferences } from '@/contexts/PreferencesContext';
+import { clearAllUserData } from '@/utils/localStorage';
 
 export const Settings: React.FC = () => {
   const { clearAllData } = usePreferences();
 
   const handleClearData = () => {
-    if (confirm('Are you sure you want to clear all data? This will reset the demo.')) {
-      clearAllData();
+    if (confirm('Are you sure you want to clear all data? This will reset the demo and log you in as the default choreographer.')) {
+      // Clear all localStorage data
+      clearAllUserData();
+      
+      // Also clear any other localStorage keys that might be used
+      const keysToRemove = [
+        'dance-app-user-preferences',
+        'dance-app-settings', 
+        'dance-app-current-user-id',
+        // Add any other keys that might be used by the app
+      ];
+      
+      keysToRemove.forEach(key => {
+        localStorage.removeItem(key);
+      });
+      
+      // Reload the page to reset everything
       window.location.reload();
     }
   };
@@ -29,7 +45,7 @@ export const Settings: React.FC = () => {
             <div>
               <h4 className="font-medium mb-2">Reset Demo Data</h4>
               <p className="text-sm text-muted-foreground mb-3">
-                Clear all preferences and reset to default state for a clean demo experience.
+                Clear all preferences and reset to default state for a clean demo experience. This will log you in as the default choreographer.
               </p>
               <Button variant="destructive" onClick={handleClearData}>
                 Clear All Data

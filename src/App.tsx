@@ -8,7 +8,7 @@ import { Dashboard } from '@/pages/Dashboard';
 import { Schedule } from '@/pages/Schedule';
 import { MyClasses } from '@/pages/MyClasses';
 import { Settings } from '@/pages/Settings';
-import { ChoreographerProfile } from '@/components/ChoreographerProfile';
+import { Profile } from '@/pages/Profile';
 import { useUserState } from '@/hooks/useUserState';
 
 // Loading component
@@ -36,7 +36,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/schedule" element={<Schedule />} />
         <Route path="/my-classes" element={<MyClasses />} />
-        <Route path="/choreographer/:choreographerId" element={<ChoreographerProfile />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/settings" element={<Settings />} />
         {/* Catch all route - redirect to dashboard */}
         <Route path="*" element={<Navigate to="/dashboard" replace />} />

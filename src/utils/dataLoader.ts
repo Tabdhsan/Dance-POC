@@ -174,11 +174,11 @@ export const searchClasses = async (query: string): Promise<DanceClass[]> => {
  * Get default user for app initialization
  */
 export const getDefaultUser = async (): Promise<User> => {
-  const users = await loadUsers();
-  // Return the first user (Sam Chen - dancer) as default
-  return users[0] || {
+  const choreographers = await loadChoreographers();
+  // Return the first choreographer as default
+  return choreographers[0] || {
     id: 'default-user',
     name: 'Demo User',
-    role: 'dancer'
+    role: 'choreographer'
   };
 };

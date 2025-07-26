@@ -82,6 +82,20 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   useEffect(() => {
     initializeUser();
   }, []);
+ 
+  // Load saved user data from localStorage
+  const loadSavedUserData = (userId: string): User | null => {
+    try {
+      const userKey = `user-${userId}`;
+      const savedData = localStorage.getItem(userKey);
+      if (savedData) {
+        return JSON.parse(savedData);
+      }
+    } catch (error) {
+      console.error('Failed to load saved user data:', error);
+    }
+    return null;
+  };
 
   // Initialize user data
   const initializeUser = async () => {
@@ -100,7 +114,9 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         // Try to find existing user
         const existingUser = users.find(user => user.id === currentUserId);
         if (existingUser) {
-          currentUser = existingUser;
+          // Check if there's saved data for this user
+          const savedUserData = loadSavedUserData(currentUserId);
+          currentUser = savedUserData || existingUser;
         } else {
           // Fallback to default user if stored ID not found
           currentUser = await getDefaultUser();
@@ -143,9 +159,13 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const switchUser = (userId: string) => {
     const user = state.users.find(u => u.id === userId);
     if (user) {
+      // Check for saved data first
+      const savedUserData = loadSavedUserData(userId);
+      const userToSwitch = savedUserData || user;
+      
       saveCurrentUserId(userId);
       initializeUserPreferences(userId);
-      dispatch({ type: 'SET_CURRENT_USER', payload: user });
+      dispatch({ type: 'SET_CURRENT_USER', payload: userToSwitch });
     }
   };
 
