@@ -145,6 +145,7 @@ export const AddClassModal: React.FC<AddClassModalProps> = ({
         title: formData.title.trim(),
         choreographerId: currentUser?.id || '',
         choreographerName: currentUser?.name || '',
+        choreographerUsername: currentUser?.username || '',
         style: formData.style,
         dateTime: formData.dateTime,
         location: formData.location.trim(),

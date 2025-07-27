@@ -1,6 +1,5 @@
 // Schedule page component
 import React, { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useClasses } from '@/contexts/ClassContext';
 import { ClassListByDate } from '@/components/ClassListByDate';
 import { ClassDetailModal } from '@/components/ClassDetailModal';
@@ -9,7 +8,6 @@ import type { DanceClass, FilterOptions } from '@/types';
 import { PageContainer } from '@/components/PageContainer';
 
 export const Schedule: React.FC = () => {
-  const navigate = useNavigate();
   const { state: classState } = useClasses();
   const [selectedClass, setSelectedClass] = useState<DanceClass | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);

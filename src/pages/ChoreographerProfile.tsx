@@ -6,7 +6,7 @@ import { useUser } from '@/contexts/UserContext';
 import { useClasses } from '@/contexts/ClassContext';
 //import { findChoreographerByUsername, generateUsername } from '@/utils/dataLoader';
 import type { Choreographer } from '@/types';
-import { ArrowLeft, Globe, Instagram, Youtube, ExternalLink, Play, Calendar, MapPin, Users } from 'lucide-react';
+import { ArrowLeft, Globe, Instagram, Youtube, ExternalLink, Calendar, MapPin, Users } from 'lucide-react';
 import { extractYouTubeVideoId, generateYouTubeEmbedUrl } from '@/utils/youtubeUtils';
 import { placeholderImage } from '@/lib/utils';
 
