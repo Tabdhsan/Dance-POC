@@ -83,11 +83,6 @@ export const Schedule: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  // Handle choreographer click
-  const handleChoreographerClick = (choreographerId: string) => {
-    navigate(`/choreographer/${choreographerId}`);
-  };
-
   return (
     <PageContainer>
 

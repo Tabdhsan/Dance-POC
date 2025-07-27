@@ -11,7 +11,7 @@ import {
   User
 } from 'lucide-react';
 import type { ClassCardProps } from '@/types';
-import { cn, placeholderImage } from '@/lib/utils';
+import { cn, placeholderImage, formatDateTime } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
 
 export const ClassCard: React.FC<ClassCardProps> = ({
@@ -25,24 +25,7 @@ export const ClassCard: React.FC<ClassCardProps> = ({
 }) => {
   const navigate = useNavigate();
   // Format date and time
-  const formatDateTime = (dateTimeString: string) => {
-    const date = new Date(dateTimeString);
-    const dateOptions: Intl.DateTimeFormatOptions = {
-      weekday: 'short',
-      month: 'short',
-      day: 'numeric'
-    };
-    const timeOptions: Intl.DateTimeFormatOptions = {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    };
-    
-    return {
-      date: date.toLocaleDateString('en-US', dateOptions),
-      time: date.toLocaleTimeString('en-US', timeOptions)
-    };
-  };
+  
   const { date, time } = formatDateTime(danceClass.dateTime);
 
   // Handle interest toggle
@@ -71,6 +54,8 @@ export const ClassCard: React.FC<ClassCardProps> = ({
       danceClass.status === 'cancelled' && "opacity-80",
       danceClass.status === 'featured' && !showFlyer && "ring-2 ring-blue-500/50"
     )}>
+      <div className="flex flex-col space-y-3 h-full">
+
       {/* Class Image/Flyer */}
       {danceClass.status === 'featured' && showFlyer && (
       <div className="relative">
@@ -131,9 +116,9 @@ export const ClassCard: React.FC<ClassCardProps> = ({
       )}
 
       {/* Card Content */}
-      <div className="flex flex-col p-4 h-full space-y-3">
+      <div className="flex flex-col flex-grow space-y-3 p-4">
         {/* Title and Choreographer */}
-        <div className="flex items-center justify-between h-10">
+        <div className="flex h-auto justify-between h-10">
             <h3 className="font-semibold text-lg leading-tight mb-1">
               {danceClass.title}
             </h3>
@@ -170,7 +155,7 @@ export const ClassCard: React.FC<ClassCardProps> = ({
             </div>
             ) : (
               <div className="flex gap-1">
-                <span className="bg-destructive opacity-80 text-destructive-foreground text-xs font-medium px-2 py-1 rounded-full cursor-default">
+                <span className="bg-destructive m-auto opacity-80 text-destructive-foreground text-xs font-medium px-2 py-1 rounded-full cursor-default">
                   Cancelled
                 </span>
               </div>
@@ -205,7 +190,7 @@ export const ClassCard: React.FC<ClassCardProps> = ({
         </div>
 
         {/* Date, Time, and Location */}
-        <div className="space-y-2 text-sm text-muted-foreground">
+        <div className="space-y-2 text-sm text-muted-foreground flex-grow">
           <div className="flex items-center gap-2">
             <Calendar className="h-4 w-4" />
             <span>{date} at {time}</span>
@@ -223,13 +208,15 @@ export const ClassCard: React.FC<ClassCardProps> = ({
         </div>
 
         {/* Description */}
-        <p className="text-sm text-muted-foreground line-clamp-2">
-          {danceClass.description}
-        </p>
+        <div className="flex flex-col gap-2">
+          <p className="text-sm text-muted-foreground line-clamp-2">
+            {danceClass.description}
+          </p>
+        </div>
         
 
         {/* Action Buttons */}
-        <div className="flex mt-auto gap-2 pt-2">
+        <div className="flex  gap-2 pt-2">
           {danceClass.rsvpLink && danceClass.status !== 'cancelled' && (
             <Button
               onClick={handleRSVPClick}
@@ -255,5 +242,7 @@ export const ClassCard: React.FC<ClassCardProps> = ({
         </div>
       </div>
     </div>
+    </div>
+
   );
 };

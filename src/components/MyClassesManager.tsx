@@ -17,6 +17,7 @@ import { AddClassModal } from './AddClassModal';
 import { EditClassModal } from './EditClassModal';
 import { ConfirmModal } from './ConfirmModal';
 import type { DanceClass } from '@/types';
+import { formatDateTime } from '@/lib/utils';
 
 export const MyClassesManager: React.FC = () => {
   const { state: userState } = useUser();
@@ -38,22 +39,6 @@ export const MyClassesManager: React.FC = () => {
       cls.choreographerId === currentUser.id
     ).sort((a, b) => new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime());
   }, [classState.classes, currentUser]);
-
-  // Format date and time for display
-  const formatDateTime = (dateTime: string) => {
-    const date = new Date(dateTime);
-    const dateStr = date.toLocaleDateString('en-US', {
-      weekday: 'short',
-      month: 'short',
-      day: 'numeric'
-    });
-    const timeStr = date.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    });
-    return { dateStr, timeStr };
-  };
 
   // Get status badge styling
   const getStatusBadge = (status: DanceClass['status']) => {
@@ -209,7 +194,7 @@ export const MyClassesManager: React.FC = () => {
       ) : (
         <div className="space-y-4">
           {myClasses.map((danceClass) => {
-            const { dateStr, timeStr } = formatDateTime(danceClass.dateTime);
+            const { date, time } = formatDateTime(danceClass.dateTime);
             
             return (
               <div
@@ -249,11 +234,11 @@ export const MyClassesManager: React.FC = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm text-muted-foreground">
                       <div className="flex items-center space-x-2">
                         <Calendar className="h-4 w-4" />
-                        <span>{dateStr}</span>
+                        <span>{date}</span>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Clock className="h-4 w-4" />
-                        <span>{timeStr}</span>
+                        <span>{time}</span>
                       </div>
                       <div className="flex items-center space-x-2">
                         <MapPin className="h-4 w-4" />

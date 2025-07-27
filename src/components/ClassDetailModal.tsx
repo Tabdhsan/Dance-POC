@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { useClassPreferences } from '@/hooks/useUserState';
 import type { DanceClass } from '@/types';
-import { cn } from '@/lib/utils';
+import { cn, formatDateTime } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
 
 interface ClassDetailModalProps {
@@ -41,28 +41,7 @@ export const ClassDetailModal: React.FC<ClassDetailModalProps> = ({
     return null;
   }
 
-  // Format date and time with more detail
-  const formatDateTime = (dateTimeString: string) => {
-    const date = new Date(dateTimeString);
-    const dateOptions: Intl.DateTimeFormatOptions = {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    };
-    const timeOptions: Intl.DateTimeFormatOptions = {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true,
-      timeZoneName: 'short'
-    };
-    
-    return {
-      date: date.toLocaleDateString('en-US', dateOptions),
-      time: date.toLocaleTimeString('en-US', timeOptions)
-    };
-  };
-
+  
   const { date, time } = formatDateTime(danceClass.dateTime);
 
   // Handle backdrop click
