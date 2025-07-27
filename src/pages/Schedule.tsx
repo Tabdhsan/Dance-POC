@@ -122,7 +122,6 @@ export const Schedule: React.FC = () => {
         classes={filteredClasses}
         loading={classState.loading}
         emptyMessage="No classes match your current filters. Try adjusting your search criteria."
-        onChoreographerClick={handleChoreographerClick}
         onViewDetails={handleClassSelect}
       />
 
@@ -134,7 +133,6 @@ export const Schedule: React.FC = () => {
           setIsModalOpen(false);
           setSelectedClass(null);
         }}
-        onChoreographerClick={handleChoreographerClick}
       />
     </div>
   );

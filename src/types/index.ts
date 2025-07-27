@@ -90,9 +90,9 @@ export interface ClassCardProps {
   danceClass: DanceClass;
   isInterested?: boolean;
   isAttending?: boolean;
+  showFlyer?: boolean;
   onInterestToggle?: (classId: string) => void;
   onAttendingToggle?: (classId: string) => void;
-  onChoreographerClick?: (choreographerId: string) => void;
   onViewDetails?: (danceClass: DanceClass) => void;
 }
 

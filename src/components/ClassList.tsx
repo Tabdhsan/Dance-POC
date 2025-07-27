@@ -7,18 +7,18 @@ import { cn } from '@/lib/utils';
 
 interface ClassListProps {
   classes: DanceClass[];
-  onChoreographerClick?: (choreographerId: string) => void;
   onViewDetails?: (danceClass: DanceClass) => void;
   className?: string;
   emptyMessage?: string;
   loading?: boolean;
+  showFlyer?: boolean;
 }
 
 export const ClassList: React.FC<ClassListProps> = ({
   classes,
-  onChoreographerClick,
   onViewDetails,
   className,
+  showFlyer = false,
   emptyMessage = "No classes found",
   loading = false
 }) => {
@@ -87,11 +87,11 @@ export const ClassList: React.FC<ClassListProps> = ({
         <ClassCard
           key={danceClass.id}
           danceClass={danceClass}
+          showFlyer={showFlyer}
           isInterested={isInterested(danceClass.id)}
           isAttending={isAttending(danceClass.id)}
           onInterestToggle={toggleInterest}
           onAttendingToggle={toggleAttending}
-          onChoreographerClick={onChoreographerClick}
           onViewDetails={onViewDetails}
         />
       ))}

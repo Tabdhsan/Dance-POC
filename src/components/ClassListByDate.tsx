@@ -7,7 +7,6 @@ import { cn } from '@/lib/utils';
 
 interface ClassListByDateProps {
   classes: DanceClass[];
-  onChoreographerClick?: (choreographerId: string) => void;
   onViewDetails?: (danceClass: DanceClass) => void;
   className?: string;
   emptyMessage?: string;
@@ -22,7 +21,6 @@ interface GroupedClasses {
 
 export const ClassListByDate: React.FC<ClassListByDateProps> = ({
   classes,
-  onChoreographerClick,
   onViewDetails,
   className,
   emptyMessage = "No classes found",
@@ -171,7 +169,6 @@ export const ClassListByDate: React.FC<ClassListByDateProps> = ({
                 isAttending={isAttending(danceClass.id)}
                 onInterestToggle={toggleInterest}
                 onAttendingToggle={toggleAttending}
-                onChoreographerClick={onChoreographerClick}
                 onViewDetails={onViewDetails}
               />
             ))}

@@ -15,20 +15,20 @@ import {
 import { useClassPreferences } from '@/hooks/useUserState';
 import type { DanceClass } from '@/types';
 import { cn } from '@/lib/utils';
+import { useNavigate } from 'react-router-dom';
 
 interface ClassDetailModalProps {
   danceClass: DanceClass | null;
   isOpen: boolean;
   onClose: () => void;
-  onChoreographerClick?: (choreographerId: string) => void;
 }
 
 export const ClassDetailModal: React.FC<ClassDetailModalProps> = ({
   danceClass,
   isOpen,
   onClose,
-  onChoreographerClick
 }) => {
+  const navigate = useNavigate();
   const { 
     toggleInterest, 
     toggleAttending, 
@@ -74,7 +74,7 @@ export const ClassDetailModal: React.FC<ClassDetailModalProps> = ({
 
   // Handle choreographer click
   const handleChoreographerClick = () => {
-    onChoreographerClick?.(danceClass.choreographerId);
+    navigate(`/choreographer/${danceClass.choreographerUsername}`);
     onClose();
   };
 
@@ -122,7 +122,7 @@ export const ClassDetailModal: React.FC<ClassDetailModalProps> = ({
               />
               
               {/* Status badges */}
-              <div className="absolute top-3 left-3 flex gap-2">
+              <div className="">
                 {danceClass.status === 'featured' && (
                   <span className="bg-primary text-primary-foreground text-sm font-medium px-3 py-1 rounded-full">
                     Featured Class

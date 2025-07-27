@@ -89,6 +89,30 @@ export const Dashboard: React.FC = () => {
         )}
       </div>
 
+
+      {/* Featured Classes */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold">Featured Classes</h2>
+          <Link to="/schedule">
+            <Button variant="ghost" size="sm">
+              View All Classes→
+            </Button>
+          </Link>
+        </div>
+        
+        <ClassList
+          classes={featuredClasses}
+          loading={classState.loading}
+          showFlyer={true}
+          emptyMessage="No featured classes available"
+          onViewDetails={(danceClass) => {
+            setSelectedClass(danceClass);
+            setIsModalOpen(true);
+          }}
+        />
+      </div>
+
       {/* My Classes Tabs - for tracked classes */}
       <div className="space-y-4">
         <h2 className="text-xl font-semibold">My Classes</h2>
@@ -112,9 +136,6 @@ export const Dashboard: React.FC = () => {
               classes={userAttendingClasses}
               loading={classState.loading}
               emptyMessage="You're not attending any classes yet. Browse classes to find ones you'd like to attend!"
-              onChoreographerClick={(choreographerId) => {
-                navigate(`/choreographer/${choreographerId}`);
-              }}
               onViewDetails={(danceClass) => {
                 setSelectedClass(danceClass);
                 setIsModalOpen(true);
@@ -127,9 +148,6 @@ export const Dashboard: React.FC = () => {
               classes={userInterestedClasses}
               loading={classState.loading}
               emptyMessage="You haven't marked any classes as interesting yet. Explore our featured classes below!"
-              onChoreographerClick={(choreographerId) => {
-                navigate(`/choreographer/${choreographerId}`);
-              }}
               onViewDetails={(danceClass) => {
                 setSelectedClass(danceClass);
                 setIsModalOpen(true);
@@ -158,9 +176,6 @@ export const Dashboard: React.FC = () => {
             classes={choreographerClasses.slice(0, 4)}
             loading={classState.loading}
             emptyMessage="You haven't created any classes yet. Start by creating your first class!"
-            onChoreographerClick={(choreographerId) => {
-              navigate(`/choreographer/${choreographerId}`);
-            }}
             onViewDetails={(danceClass) => {
               setSelectedClass(danceClass);
               setIsModalOpen(true);
@@ -168,31 +183,6 @@ export const Dashboard: React.FC = () => {
           />
         </div>
       )}
-
-      {/* Featured Classes */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold">Featured Classes</h2>
-          <Link to="/schedule">
-            <Button variant="ghost" size="sm">
-              View All →
-            </Button>
-          </Link>
-        </div>
-        
-        <ClassList
-          classes={featuredClasses}
-          loading={classState.loading}
-          emptyMessage="No featured classes available"
-          onChoreographerClick={(choreographerId) => {
-            navigate(`/choreographer/${choreographerId}`);
-          }}
-          onViewDetails={(danceClass) => {
-            setSelectedClass(danceClass);
-            setIsModalOpen(true);
-          }}
-        />
-      </div>
 
       {/* Quick Actions */}
       <div className="space-y-4">
@@ -235,9 +225,6 @@ export const Dashboard: React.FC = () => {
         onClose={() => {
           setIsModalOpen(false);
           setSelectedClass(null);
-        }}
-        onChoreographerClick={(choreographerId) => {
-          navigate(`/choreographer/${choreographerId}`);
         }}
       />
     </div>

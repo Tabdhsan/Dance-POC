@@ -20,8 +20,8 @@ export const ClassCard: React.FC<ClassCardProps> = ({
   isAttending = false,
   onInterestToggle,
   onAttendingToggle,
-  onChoreographerClick,
-  onViewDetails
+  onViewDetails,
+  showFlyer = false,
 }) => {
   const navigate = useNavigate();
   // Format date and time
@@ -69,10 +69,11 @@ export const ClassCard: React.FC<ClassCardProps> = ({
   return (
     <div className={cn(
       "bg-card text-card-foreground rounded-lg border shadow-sm hover:shadow-md transition-shadow duration-200",
-      danceClass.status === 'cancelled' && "opacity-60",
-      danceClass.status === 'featured' && "ring-2 ring-primary/20"
+      danceClass.status === 'cancelled' && "opacity-80",
+      danceClass.status === 'featured' && !showFlyer && "ring-2 ring-blue-500/50"
     )}>
       {/* Class Image/Flyer */}
+      {danceClass.status === 'featured' && showFlyer && (
       <div className="relative">
         {danceClass.flyer ? (
           <img
@@ -122,69 +123,78 @@ export const ClassCard: React.FC<ClassCardProps> = ({
         </div>
 
         {/* Status badges */}
-        <div className="absolute top-3 left-3 flex gap-2">
-          {danceClass.status === 'featured' && (
-            <span className="bg-primary text-primary-foreground text-xs font-medium px-2 py-1 rounded-full">
-              Featured
-            </span>
-          )}
-          {danceClass.status === 'cancelled' && (
-            <span className="bg-destructive text-destructive-foreground text-xs font-medium px-2 py-1 rounded-full">
-              Cancelled
-            </span>
-          )}
-        </div>
-
-        {/* Interest/Attending buttons */}
-        <div className="absolute top-2 right-2 flex gap-1">
-          <Button
-            variant="ghost"
-            size="sm"
-            className={cn(
-              "h-10 w-10 p-0 bg-background/80 backdrop-blur-sm hover:bg-background/90 touch-manipulation",
-              isInterested && "text-red-500 hover:text-red-600"
-            )}
-            onClick={handleInterestClick}
-            title={isInterested ? "Remove from interested" : "Mark as interested"}
-            aria-label={isInterested ? "Remove from interested" : "Mark as interested"}
-          >
-            <Heart className={cn("h-5 w-5", isInterested && "fill-current")} />
-          </Button>
-          
-          <Button
-            variant="ghost"
-            size="sm"
-            className={cn(
-              "h-10 w-10 p-0 bg-background/80 backdrop-blur-sm hover:bg-background/90 touch-manipulation",
-              isAttending && "text-green-500 hover:text-green-600"
-            )}
-            onClick={handleAttendingClick}
-            title={isAttending ? "Remove from attending" : "Mark as attending"}
-            aria-label={isAttending ? "Remove from attending" : "Mark as attending"}
-          >
-            <UserCheck className={cn("h-5 w-5", isAttending && "fill-current")} />
-          </Button>
-        </div>
+        {/* <div className="absolute top-3 left-3 flex gap-2">
+          <span className="bg-primary text-primary-foreground text-xs font-medium px-2 py-1 rounded-full">
+            Featured
+          </span>
+        </div> */}
       </div>
+      )}
 
       {/* Card Content */}
       <div className="p-4 space-y-3">
         {/* Title and Choreographer */}
-        <div>
-          <h3 className="font-semibold text-lg leading-tight mb-1">
-            {danceClass.title}
-          </h3>
-          <button
-            onClick={() => navigate(`/choreographer/${danceClass.choreographerUsername}`)}
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
-          >
-            <User className="h-3 w-3" />
-            {danceClass.choreographerName}
-          </button>
+        <div className="flex items-center justify-between h-10">
+            <h3 className="font-semibold text-lg leading-tight mb-1">
+              {danceClass.title}
+            </h3>
+            {/* Interest/Attending buttons */}
+            { danceClass.status !== 'cancelled' ? (
+            <div className="flex gap-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                className={cn(
+                  "h-10 w-10 p-0 bg-background/80 backdrop-blur-sm hover:bg-background/90 touch-manipulation cursor-pointer",
+                  isInterested && "text-red-500 hover:text-red-600"
+                )}
+                onClick={handleInterestClick}
+                title={isInterested ? "Remove from interested" : "Mark as interested"}
+                aria-label={isInterested ? "Remove from interested" : "Mark as interested"}
+              >
+                <Heart className={cn("h-5 w-5", isInterested && "fill-current")} />
+              </Button>
+              
+              <Button
+                variant="ghost"
+                size="sm"
+                className={cn(
+                  "h-10 w-10 p-0 bg-background/80 backdrop-blur-sm hover:bg-background/90 touch-manipulation cursor-pointer",
+                  isAttending && "text-green-500 hover:text-green-600"
+                )}
+                onClick={handleAttendingClick}
+                title={isAttending ? "Remove from attending" : "Mark as attending"}
+                aria-label={isAttending ? "Remove from attending" : "Mark as attending"}
+              >
+                <UserCheck className={cn("h-5 w-5", isAttending && "fill-current")} />
+              </Button>
+            </div>
+            ) : (
+              <div className="flex gap-1">
+                <span className="bg-destructive opacity-80 text-destructive-foreground text-xs font-medium px-2 py-1 rounded-full cursor-default">
+                  Cancelled
+                </span>
+              </div>
+            )}
         </div>
+        <button
+          onClick={() => navigate(`/choreographer/${danceClass.choreographerUsername}`)}
+          className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+        >
+          <User className="h-3 w-3" />
+          {danceClass.choreographerName}
+        </button>
 
         {/* Dance Styles */}
         <div className="flex flex-wrap gap-1">
+          {/* Status badges */}
+          {danceClass.status === 'featured' && (
+          <div className="flex gap-2">
+            <span className="bg-primary text-primary-foreground text-xs font-medium px-2 py-1 rounded-full">
+              Featured
+            </span>
+          </div>
+          )}
           {danceClass.style.map((style, index) => (
             <span
               key={index}

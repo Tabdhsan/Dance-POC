@@ -4,12 +4,10 @@ import { Button } from '@/components/ui/button';
 import { 
   Plus, 
   Edit, 
-  Trash2, 
   Calendar, 
   MapPin, 
   Clock,
   DollarSign,
-  Users,
   Star,
   X
 } from 'lucide-react';
@@ -19,7 +17,6 @@ import { AddClassModal } from './AddClassModal';
 import { EditClassModal } from './EditClassModal';
 import { ConfirmModal } from './ConfirmModal';
 import type { DanceClass } from '@/types';
-import { cn } from '@/lib/utils';
 
 export const MyClassesManager: React.FC = () => {
   const { state: userState } = useUser();
@@ -277,7 +274,7 @@ export const MyClassesManager: React.FC = () => {
                   </div>
 
                   {/* Management Buttons */}
-                  <div className="flex flex-col sm:flex-row lg:flex-col gap-2 lg:min-w-[120px] w-[12rem]">
+                  <div className="flex flex-col sm:flex-row lg:flex-col gap-2 lg:min-w-[120px] w-full sm:w-[12rem]">
                     <Button
                       variant="outline"
                       size="sm"
