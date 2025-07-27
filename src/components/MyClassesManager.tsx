@@ -84,13 +84,13 @@ export const MyClassesManager: React.FC = () => {
     }
   };
 
-  const handleDeleteClass = (classId: string) => {
-    const classToDelete = myClasses.find(cls => cls.id === classId);
-    if (classToDelete) {
-      setSelectedClassForAction(classToDelete);
-      setIsDeleteModalOpen(true);
-    }
-  };
+  // const handleDeleteClass = (classId: string) => {
+  //   const classToDelete = myClasses.find(cls => cls.id === classId);
+  //   if (classToDelete) {
+  //     setSelectedClassForAction(classToDelete);
+  //     setIsDeleteModalOpen(true);
+  //   }
+  // };
 
   const handleConfirmDelete = async () => {
     if (!selectedClassForAction) return;

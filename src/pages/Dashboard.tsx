@@ -1,6 +1,6 @@
 // Dashboard page component
 import React, { useState, useMemo } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useUserState, useClassPreferences } from '@/hooks/useUserState';
 import { useClasses } from '@/contexts/ClassContext';
 import { ClassList } from '@/components/ClassList';
@@ -11,7 +11,6 @@ import { Heart, UserCheck, BookOpen } from 'lucide-react';
 import type { DanceClass } from '@/types';
 
 export const Dashboard: React.FC = () => {
-  const navigate = useNavigate();
   const { currentUser, isChoreographer, getCurrentUserClasses } = useUserState();
   const { interestedClasses, attendingClasses, getInterestedClasses, getAttendingClasses } = useClassPreferences();
   const { state: classState } = useClasses();

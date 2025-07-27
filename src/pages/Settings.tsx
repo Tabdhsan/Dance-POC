@@ -1,11 +1,9 @@
 // Settings page component
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { usePreferences } from '@/contexts/PreferencesContext';
 import { clearAllUserData } from '@/utils/localStorage';
 
 export const Settings: React.FC = () => {
-  const { clearAllData } = usePreferences();
 
   const handleClearData = () => {
     if (confirm('Are you sure you want to clear all data? This will reset the demo and log you in as the default choreographer.')) {

@@ -11,7 +11,7 @@ import {
   User
 } from 'lucide-react';
 import type { ClassCardProps } from '@/types';
-import { cn, placeholderImage, formatDateTime } from '@/lib/utils';
+import { cn, formatDateTime } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
 
 export const ClassCard: React.FC<ClassCardProps> = ({

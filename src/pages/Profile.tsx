@@ -8,7 +8,7 @@ import { useUser } from '@/contexts/UserContext';
 import { useClasses } from '@/contexts/ClassContext';
 import type { Choreographer } from '@/types';
 import { Edit3, Save, X, Camera, Globe, Instagram, Youtube, ExternalLink, Play, AlertCircle, Check } from 'lucide-react';
-import { cn, placeholderImage } from '@/lib/utils';
+import { placeholderImage } from '@/lib/utils';
 import { extractYouTubeVideoId, generateYouTubeEmbedUrl, validateYouTubeUrl } from '@/utils/youtubeUtils';
 
 export const Profile: React.FC = () => {
