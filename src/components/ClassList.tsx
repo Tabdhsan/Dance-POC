@@ -33,7 +33,7 @@ export const ClassList: React.FC<ClassListProps> = ({
   if (loading) {
     return (
       <div className={cn(
-        "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-6",
+        "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6",
         className
       )}>
         {Array.from({ length: 8 }).map((_, index) => (
@@ -80,7 +80,7 @@ export const ClassList: React.FC<ClassListProps> = ({
 
   return (
     <div className={cn(
-      "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-6",
+      "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6",
       className
     )}>
       {classes.map((danceClass) => (

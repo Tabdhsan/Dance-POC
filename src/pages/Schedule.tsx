@@ -6,6 +6,7 @@ import { ClassListByDate } from '@/components/ClassListByDate';
 import { ClassDetailModal } from '@/components/ClassDetailModal';
 import { FilterPanel } from '@/components/FilterPanel';
 import type { DanceClass, FilterOptions } from '@/types';
+import { PageContainer } from '@/components/PageContainer';
 
 export const Schedule: React.FC = () => {
   const navigate = useNavigate();
@@ -88,6 +89,8 @@ export const Schedule: React.FC = () => {
   };
 
   return (
+    <PageContainer>
+
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4">
@@ -135,5 +138,7 @@ export const Schedule: React.FC = () => {
         }}
       />
     </div>
+    </PageContainer>
+
   );
 };

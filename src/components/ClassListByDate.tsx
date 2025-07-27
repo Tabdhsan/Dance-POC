@@ -62,9 +62,10 @@ export const ClassListByDate: React.FC<ClassListByDateProps> = ({
     const groups = new Map<string, DanceClass[]>();
     
     classes.forEach(danceClass => {
+
       const date = new Date(danceClass.dateTime);
+      date.setHours(0, 0, 0, 0);
       const dateKey = date.toISOString().split('T')[0]; // YYYY-MM-DD format
-      
       if (!groups.has(dateKey)) {
         groups.set(dateKey, []);
       }
@@ -74,7 +75,9 @@ export const ClassListByDate: React.FC<ClassListByDateProps> = ({
     // Sort groups by date and sort classes within each group by time
     return Array.from(groups.entries())
       .map(([dateKey, classesInGroup]) => {
-        const date = new Date(dateKey);
+        // Parse date in local time to avoid timezone issues
+        const [year, month, day] = dateKey.split('-').map(Number);
+        const date = new Date(year, month - 1, day); // month is 0-indexed
         const displayDate = formatDateHeader(date);
         
         // Sort classes by time within the group
@@ -98,7 +101,7 @@ export const ClassListByDate: React.FC<ClassListByDateProps> = ({
         {Array.from({ length: 3 }).map((_, groupIndex) => (
           <div key={groupIndex} className="space-y-4">
             <div className="h-8 bg-muted-foreground/20 rounded w-48 animate-pulse" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
               {Array.from({ length: 4 }).map((_, index) => (
                 <div key={index} className="animate-pulse">
                   <div className="bg-muted rounded-lg">
@@ -160,7 +163,7 @@ export const ClassListByDate: React.FC<ClassListByDateProps> = ({
           </div>
 
           {/* Classes Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
             {group.classes.map((danceClass) => (
               <ClassCard
                 key={danceClass.id}

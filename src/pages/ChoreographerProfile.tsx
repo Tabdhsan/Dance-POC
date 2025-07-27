@@ -251,16 +251,6 @@ export const ChoreographerProfile: React.FC = () => {
           </div>
         </div>
       )}
-
-      {/* All Classes by Choreographer */}
-      {choreographerClasses.length > 0 && (
-        <div className="space-y-4">
-          <h3 className="text-xl font-semibold">All Classes</h3>
-          <div className="text-muted-foreground">
-            {choreographer.name} has taught {choreographerClasses.length} classes
-          </div>
-        </div>
-      )}
     </div>
   );
 }; 

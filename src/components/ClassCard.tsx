@@ -40,10 +40,9 @@ export const ClassCard: React.FC<ClassCardProps> = ({
     
     return {
       date: date.toLocaleDateString('en-US', dateOptions),
-      time: date.toLocaleDateString('en-US', timeOptions)
+      time: date.toLocaleTimeString('en-US', timeOptions)
     };
   };
-
   const { date, time } = formatDateTime(danceClass.dateTime);
 
   // Handle interest toggle
@@ -132,7 +131,7 @@ export const ClassCard: React.FC<ClassCardProps> = ({
       )}
 
       {/* Card Content */}
-      <div className="p-4 space-y-3">
+      <div className="flex flex-col p-4 h-full space-y-3">
         {/* Title and Choreographer */}
         <div className="flex items-center justify-between h-10">
             <h3 className="font-semibold text-lg leading-tight mb-1">
@@ -227,9 +226,10 @@ export const ClassCard: React.FC<ClassCardProps> = ({
         <p className="text-sm text-muted-foreground line-clamp-2">
           {danceClass.description}
         </p>
+        
 
         {/* Action Buttons */}
-        <div className="flex gap-2 pt-2">
+        <div className="flex mt-auto gap-2 pt-2">
           {danceClass.rsvpLink && danceClass.status !== 'cancelled' && (
             <Button
               onClick={handleRSVPClick}
