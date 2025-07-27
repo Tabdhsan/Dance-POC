@@ -23,7 +23,7 @@ import type { FilterOptions } from '@/types';
 import { cn } from '@/lib/utils';
 
 interface FilterPanelProps {
-  onFiltersChange?: (filters: FilterOptions) => void;
+  onFiltersChange?: (filters: FilterOptions, search: string) => void;
   className?: string;
 }
 
@@ -70,12 +70,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
 
   // Update filters when they change
   useEffect(() => {
-    const combinedFilters = {
-      ...localFilters,
-      searchQuery: searchQuery.trim()
-    };
-    
-    onFiltersChange?.(combinedFilters);
+    onFiltersChange?.(localFilters, searchQuery);
   }, [localFilters, searchQuery]); // Removed onFiltersChange from dependencies
 
   // Update storage when filters change

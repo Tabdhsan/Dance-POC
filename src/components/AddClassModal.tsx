@@ -6,16 +6,12 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { 
   X, 
-  Calendar, 
-  MapPin, 
   DollarSign, 
   Link,
   Image,
-  Plus,
-  Trash2
+  Plus
 } from 'lucide-react';
 import { useUser } from '@/contexts/UserContext';
-import { useClasses } from '@/contexts/ClassContext';
 import type { DanceClass } from '@/types';
 import { cn } from '@/lib/utils';
 
@@ -39,7 +35,6 @@ export const AddClassModal: React.FC<AddClassModalProps> = ({
   onClassAdded
 }) => {
   const { state: userState } = useUser();
-  const { state: classState } = useClasses();
   const { currentUser } = userState;
 
   // Form state

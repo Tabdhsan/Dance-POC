@@ -1,7 +1,6 @@
 // Main layout component with responsive navigation
 import React from 'react';
-import { NavigationBar } from './NavigationBar';
-import { PageContainer } from './PageContainer';
+import { Navigation } from './Navigation';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -10,10 +9,10 @@ interface LayoutProps {
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="min-h-screen bg-background">
-      <NavigationBar />
-      <PageContainer>
-        {children}
-      </PageContainer>
+      <Navigation />
+      <div className="pt-[4rem] lg:pl-64">
+				<main className="p-4 sm:p-6 lg:p-8">{children}</main>
+			</div>
     </div>
   );
 };

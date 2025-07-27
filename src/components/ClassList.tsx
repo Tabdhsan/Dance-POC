@@ -7,18 +7,18 @@ import { cn } from '@/lib/utils';
 
 interface ClassListProps {
   classes: DanceClass[];
-  onChoreographerClick?: (choreographerId: string) => void;
   onViewDetails?: (danceClass: DanceClass) => void;
   className?: string;
   emptyMessage?: string;
   loading?: boolean;
+  showFlyer?: boolean;
 }
 
 export const ClassList: React.FC<ClassListProps> = ({
   classes,
-  onChoreographerClick,
   onViewDetails,
   className,
+  showFlyer = false,
   emptyMessage = "No classes found",
   loading = false
 }) => {
@@ -33,7 +33,7 @@ export const ClassList: React.FC<ClassListProps> = ({
   if (loading) {
     return (
       <div className={cn(
-        "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-6",
+        "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6",
         className
       )}>
         {Array.from({ length: 8 }).map((_, index) => (
@@ -70,7 +70,7 @@ export const ClassList: React.FC<ClassListProps> = ({
     return (
       <div className={cn("text-center py-12", className)}>
         <div className="text-muted-foreground">
-          <div className="text-6xl mb-4">🕺</div>
+          {/* <div className="text-6xl mb-4">🕺</div> */}
           <h3 className="text-lg font-medium mb-2">No Classes Found</h3>
           <p className="text-sm">{emptyMessage}</p>
         </div>
@@ -80,18 +80,18 @@ export const ClassList: React.FC<ClassListProps> = ({
 
   return (
     <div className={cn(
-      "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-6",
+      "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6",
       className
     )}>
       {classes.map((danceClass) => (
         <ClassCard
           key={danceClass.id}
           danceClass={danceClass}
+          showFlyer={showFlyer}
           isInterested={isInterested(danceClass.id)}
           isAttending={isAttending(danceClass.id)}
           onInterestToggle={toggleInterest}
           onAttendingToggle={toggleAttending}
-          onChoreographerClick={onChoreographerClick}
           onViewDetails={onViewDetails}
         />
       ))}

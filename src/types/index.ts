@@ -11,7 +11,8 @@ export interface SocialLinks {
 export interface User {
   id: string;
   name: string;
-  role: 'dancer' | 'choreographer' | 'both';
+  username: string;
+  role: 'dancer' | 'choreographer' | 'both'; // TODO: just choreographer flag
   pronouns?: string;
   bio?: string;
   profilePhoto?: string;
@@ -32,6 +33,7 @@ export interface DanceClass {
   title: string;
   choreographerId: string;
   choreographerName: string;
+  choreographerUsername: string;
   style: string[];
   dateTime: string;
   location: string;
@@ -40,7 +42,7 @@ export interface DanceClass {
   videoLink?: string;
   rsvpLink?: string;
   flyer?: string;
-  status: 'active' | 'cancelled' | 'featured';
+  status: 'active' | 'cancelled' | 'featured' | 'submitted';
 }
 
 export interface UserPreferences {
@@ -51,7 +53,6 @@ export interface UserPreferences {
 }
 
 export interface AppSettings {
-  preferredView: 'list' | 'calendar';
   filters: {
     styles: string[];
     choreographers: string[];
@@ -89,9 +90,9 @@ export interface ClassCardProps {
   danceClass: DanceClass;
   isInterested?: boolean;
   isAttending?: boolean;
+  showFlyer?: boolean;
   onInterestToggle?: (classId: string) => void;
   onAttendingToggle?: (classId: string) => void;
-  onChoreographerClick?: (choreographerId: string) => void;
   onViewDetails?: (danceClass: DanceClass) => void;
 }
 
@@ -108,4 +109,3 @@ export interface FilterOptions {
 // Utility types
 export type UserRole = User['role'];
 export type ClassStatus = DanceClass['status'];
-export type ViewMode = AppSettings['preferredView'];

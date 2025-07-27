@@ -11,7 +11,8 @@ import {
   User
 } from 'lucide-react';
 import type { ClassCardProps } from '@/types';
-import { cn } from '@/lib/utils';
+import { cn, placeholderImage, formatDateTime } from '@/lib/utils';
+import { useNavigate } from 'react-router-dom';
 
 export const ClassCard: React.FC<ClassCardProps> = ({
   danceClass,
@@ -19,29 +20,12 @@ export const ClassCard: React.FC<ClassCardProps> = ({
   isAttending = false,
   onInterestToggle,
   onAttendingToggle,
-  onChoreographerClick,
-  onViewDetails
+  onViewDetails,
+  showFlyer = false,
 }) => {
+  const navigate = useNavigate();
   // Format date and time
-  const formatDateTime = (dateTimeString: string) => {
-    const date = new Date(dateTimeString);
-    const dateOptions: Intl.DateTimeFormatOptions = {
-      weekday: 'short',
-      month: 'short',
-      day: 'numeric'
-    };
-    const timeOptions: Intl.DateTimeFormatOptions = {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    };
-    
-    return {
-      date: date.toLocaleDateString('en-US', dateOptions),
-      time: date.toLocaleDateString('en-US', timeOptions)
-    };
-  };
-
+  
   const { date, time } = formatDateTime(danceClass.dateTime);
 
   // Handle interest toggle
@@ -56,12 +40,6 @@ export const ClassCard: React.FC<ClassCardProps> = ({
     onAttendingToggle?.(danceClass.id);
   };
 
-  // Handle choreographer click
-  const handleChoreographerClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    onChoreographerClick?.(danceClass.choreographerId);
-  };
-
   // Handle RSVP click
   const handleRSVPClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -73,10 +51,13 @@ export const ClassCard: React.FC<ClassCardProps> = ({
   return (
     <div className={cn(
       "bg-card text-card-foreground rounded-lg border shadow-sm hover:shadow-md transition-shadow duration-200",
-      danceClass.status === 'cancelled' && "opacity-60",
-      danceClass.status === 'featured' && "ring-2 ring-primary/20"
+      danceClass.status === 'cancelled' && "opacity-80",
+      danceClass.status === 'featured' && !showFlyer && "ring-2 ring-blue-500/50"
     )}>
+      <div className="flex flex-col space-y-3 h-full">
+
       {/* Class Image/Flyer */}
+      {danceClass.status === 'featured' && showFlyer && (
       <div className="relative">
         {danceClass.flyer ? (
           <img
@@ -98,9 +79,9 @@ export const ClassCard: React.FC<ClassCardProps> = ({
         )}>
           {/* Unsplash placeholder image */}
           <img
-            src={`https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=400&h=300&fit=crop&crop=center&auto=format&q=80`}
+            src='https://idsb.tmgrup.com.tr/ly/uploads/images/2024/04/09/thumbs/800x531/323101.jpg'
             alt="Dance class placeholder"
-            className="w-full h-full object-cover opacity-60"
+            className="bg-white w-full h-full object-cover opacity-60"
             onError={(e) => {
               // Fallback to icon if Unsplash fails
               e.currentTarget.style.display = 'none';
@@ -126,69 +107,78 @@ export const ClassCard: React.FC<ClassCardProps> = ({
         </div>
 
         {/* Status badges */}
-        <div className="absolute top-3 left-3 flex gap-2">
-          {danceClass.status === 'featured' && (
-            <span className="bg-primary text-primary-foreground text-xs font-medium px-2 py-1 rounded-full">
-              Featured
-            </span>
-          )}
-          {danceClass.status === 'cancelled' && (
-            <span className="bg-destructive text-destructive-foreground text-xs font-medium px-2 py-1 rounded-full">
-              Cancelled
-            </span>
-          )}
-        </div>
-
-        {/* Interest/Attending buttons */}
-        <div className="absolute top-2 right-2 flex gap-1">
-          <Button
-            variant="ghost"
-            size="sm"
-            className={cn(
-              "h-10 w-10 p-0 bg-background/80 backdrop-blur-sm hover:bg-background/90 touch-manipulation",
-              isInterested && "text-red-500 hover:text-red-600"
-            )}
-            onClick={handleInterestClick}
-            title={isInterested ? "Remove from interested" : "Mark as interested"}
-            aria-label={isInterested ? "Remove from interested" : "Mark as interested"}
-          >
-            <Heart className={cn("h-5 w-5", isInterested && "fill-current")} />
-          </Button>
-          
-          <Button
-            variant="ghost"
-            size="sm"
-            className={cn(
-              "h-10 w-10 p-0 bg-background/80 backdrop-blur-sm hover:bg-background/90 touch-manipulation",
-              isAttending && "text-green-500 hover:text-green-600"
-            )}
-            onClick={handleAttendingClick}
-            title={isAttending ? "Remove from attending" : "Mark as attending"}
-            aria-label={isAttending ? "Remove from attending" : "Mark as attending"}
-          >
-            <UserCheck className={cn("h-5 w-5", isAttending && "fill-current")} />
-          </Button>
-        </div>
+        {/* <div className="absolute top-3 left-3 flex gap-2">
+          <span className="bg-primary text-primary-foreground text-xs font-medium px-2 py-1 rounded-full">
+            Featured
+          </span>
+        </div> */}
       </div>
+      )}
 
       {/* Card Content */}
-      <div className="p-4 space-y-3">
+      <div className="flex flex-col flex-grow space-y-3 p-4">
         {/* Title and Choreographer */}
-        <div>
-          <h3 className="font-semibold text-lg leading-tight mb-1">
-            {danceClass.title}
-          </h3>
-          <button
-            onClick={handleChoreographerClick}
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
-          >
-            <User className="h-3 w-3" />
-            {danceClass.choreographerName}
-          </button>
+        <div className="flex h-auto justify-between h-10">
+            <h3 className="font-semibold text-lg leading-tight mb-1">
+              {danceClass.title}
+            </h3>
+            {/* Interest/Attending buttons */}
+            { danceClass.status !== 'cancelled' ? (
+            <div className="flex gap-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                className={cn(
+                  "h-10 w-10 p-0 bg-background/80 backdrop-blur-sm hover:bg-background/90 touch-manipulation cursor-pointer",
+                  isInterested && "text-red-500 hover:text-red-600"
+                )}
+                onClick={handleInterestClick}
+                title={isInterested ? "Remove from interested" : "Mark as interested"}
+                aria-label={isInterested ? "Remove from interested" : "Mark as interested"}
+              >
+                <Heart className={cn("h-5 w-5", isInterested && "fill-current")} />
+              </Button>
+              
+              <Button
+                variant="ghost"
+                size="sm"
+                className={cn(
+                  "h-10 w-10 p-0 bg-background/80 backdrop-blur-sm hover:bg-background/90 touch-manipulation cursor-pointer",
+                  isAttending && "text-green-500 hover:text-green-600"
+                )}
+                onClick={handleAttendingClick}
+                title={isAttending ? "Remove from attending" : "Mark as attending"}
+                aria-label={isAttending ? "Remove from attending" : "Mark as attending"}
+              >
+                <UserCheck className={cn("h-5 w-5", isAttending && "fill-current")} />
+              </Button>
+            </div>
+            ) : (
+              <div className="flex gap-1">
+                <span className="bg-destructive m-auto opacity-80 text-destructive-foreground text-xs font-medium px-2 py-1 rounded-full cursor-default">
+                  Cancelled
+                </span>
+              </div>
+            )}
         </div>
+        <button
+          onClick={() => navigate(`/choreographer/${danceClass.choreographerUsername}`)}
+          className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+        >
+          <User className="h-3 w-3" />
+          {danceClass.choreographerName}
+        </button>
 
         {/* Dance Styles */}
         <div className="flex flex-wrap gap-1">
+          {/* Status badges */}
+          {danceClass.status === 'featured' && (
+          <div className="flex gap-2">
+            <span className="bg-primary text-primary-foreground text-xs font-medium px-2 py-1 rounded-full">
+              Featured
+            </span>
+          </div>
+          )}
           {danceClass.style.map((style, index) => (
             <span
               key={index}
@@ -200,7 +190,7 @@ export const ClassCard: React.FC<ClassCardProps> = ({
         </div>
 
         {/* Date, Time, and Location */}
-        <div className="space-y-2 text-sm text-muted-foreground">
+        <div className="space-y-2 text-sm text-muted-foreground flex-grow">
           <div className="flex items-center gap-2">
             <Calendar className="h-4 w-4" />
             <span>{date} at {time}</span>
@@ -218,12 +208,15 @@ export const ClassCard: React.FC<ClassCardProps> = ({
         </div>
 
         {/* Description */}
-        <p className="text-sm text-muted-foreground line-clamp-2">
-          {danceClass.description}
-        </p>
+        <div className="flex flex-col gap-2">
+          <p className="text-sm text-muted-foreground line-clamp-2">
+            {danceClass.description}
+          </p>
+        </div>
+        
 
         {/* Action Buttons */}
-        <div className="flex gap-2 pt-2">
+        <div className="flex  gap-2 pt-2">
           {danceClass.rsvpLink && danceClass.status !== 'cancelled' && (
             <Button
               onClick={handleRSVPClick}
@@ -249,5 +242,7 @@ export const ClassCard: React.FC<ClassCardProps> = ({
         </div>
       </div>
     </div>
+    </div>
+
   );
 };

@@ -4,13 +4,12 @@ import { Button } from '@/components/ui/button';
 import { 
   Plus, 
   Edit, 
-  Trash2, 
   Calendar, 
   MapPin, 
   Clock,
   DollarSign,
-  Users,
-  Star
+  Star,
+  X
 } from 'lucide-react';
 import { useUser } from '@/contexts/UserContext';
 import { useClasses } from '@/contexts/ClassContext';
@@ -18,7 +17,7 @@ import { AddClassModal } from './AddClassModal';
 import { EditClassModal } from './EditClassModal';
 import { ConfirmModal } from './ConfirmModal';
 import type { DanceClass } from '@/types';
-import { cn } from '@/lib/utils';
+import { formatDateTime } from '@/lib/utils';
 
 export const MyClassesManager: React.FC = () => {
   const { state: userState } = useUser();
@@ -41,32 +40,18 @@ export const MyClassesManager: React.FC = () => {
     ).sort((a, b) => new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime());
   }, [classState.classes, currentUser]);
 
-  // Format date and time for display
-  const formatDateTime = (dateTime: string) => {
-    const date = new Date(dateTime);
-    const dateStr = date.toLocaleDateString('en-US', {
-      weekday: 'short',
-      month: 'short',
-      day: 'numeric'
-    });
-    const timeStr = date.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    });
-    return { dateStr, timeStr };
-  };
-
   // Get status badge styling
   const getStatusBadge = (status: DanceClass['status']) => {
     switch (status) {
       case 'featured':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+        return 'bg-green-100 text-green-800 border-green-200';
       case 'cancelled':
         return 'bg-red-100 text-red-800 border-red-200';
+      case 'submitted':
+        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
       case 'active':
       default:
-        return 'bg-green-100 text-green-800 border-green-200';
+        return 'bg-blue-100 text-blue-800 border-blue-200';
     }
   };
 
@@ -137,10 +122,10 @@ export const MyClassesManager: React.FC = () => {
     }
   };
 
-  const handleToggleFeatured = (classId: string) => {
+  const handleSubmitForFeature = (classId: string) => {
     const classToToggle = myClasses.find(cls => cls.id === classId);
     if (classToToggle) {
-      const newStatus = classToToggle.status === 'featured' ? 'active' : 'featured';
+      const newStatus = "submitted";
       updateClassStatus(classId, newStatus);
     }
   };
@@ -173,7 +158,7 @@ export const MyClassesManager: React.FC = () => {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-foreground">My Classes</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">My Classes</h1>
             <p className="text-sm sm:text-base text-muted-foreground">
               Manage your upcoming dance classes
             </p>
@@ -209,7 +194,7 @@ export const MyClassesManager: React.FC = () => {
       ) : (
         <div className="space-y-4">
           {myClasses.map((danceClass) => {
-            const { dateStr, timeStr } = formatDateTime(danceClass.dateTime);
+            const { date, time } = formatDateTime(danceClass.dateTime);
             
             return (
               <div
@@ -233,11 +218,14 @@ export const MyClassesManager: React.FC = () => {
                               {style}
                             </span>
                           ))}
-                          <span
-                            className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border ${getStatusBadge(danceClass.status)}`}
-                          >
-                            {danceClass.status.charAt(0).toUpperCase() + danceClass.status.slice(1)}
-                          </span>
+                          {danceClass.status !== 'active' && (
+                             <span
+                             className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border ${getStatusBadge(danceClass.status)}`}
+                           >
+                             {danceClass.status.charAt(0).toUpperCase() + danceClass.status.slice(1)}
+                           </span>
+                          )}
+                         
                         </div>
                       </div>
                     </div>
@@ -246,11 +234,11 @@ export const MyClassesManager: React.FC = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm text-muted-foreground">
                       <div className="flex items-center space-x-2">
                         <Calendar className="h-4 w-4" />
-                        <span>{dateStr}</span>
+                        <span>{date}</span>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Clock className="h-4 w-4" />
-                        <span>{timeStr}</span>
+                        <span>{time}</span>
                       </div>
                       <div className="flex items-center space-x-2">
                         <MapPin className="h-4 w-4" />
@@ -271,7 +259,7 @@ export const MyClassesManager: React.FC = () => {
                   </div>
 
                   {/* Management Buttons */}
-                  <div className="flex flex-col sm:flex-row lg:flex-col gap-2 lg:min-w-[120px]">
+                  <div className="flex flex-col sm:flex-row lg:flex-col gap-2 lg:min-w-[120px] w-full sm:w-[12rem]">
                     <Button
                       variant="outline"
                       size="sm"
@@ -283,20 +271,15 @@ export const MyClassesManager: React.FC = () => {
                     </Button>
                     
                     {/* Featured Toggle */}
-                    {danceClass.status !== 'cancelled' && (
+                    {danceClass.status === 'active' && (
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => handleToggleFeatured(danceClass.id)}
-                        className={cn(
-                          "flex items-center space-x-1 flex-1 lg:flex-none min-h-[44px] touch-manipulation",
-                          danceClass.status === 'featured' 
-                            ? "text-yellow-600 hover:text-yellow-700 hover:bg-yellow-50 border-yellow-300" 
-                            : "text-muted-foreground hover:text-foreground"
-                        )}
+                        onClick={() => handleSubmitForFeature(danceClass.id)}
+                        className="text-green-700 hover:text-green-900 hover:bg-green-50 flex items-center space-x-1 flex-1 lg:flex-none min-h-[44px] touch-manipulation"
                       >
-                        <Star className={cn("h-4 w-4", danceClass.status === 'featured' && "fill-current")} />
-                        <span>{danceClass.status === 'featured' ? 'Unfeature' : 'Feature'}</span>
+                        <Star className="h-4 w-4" />
+                        <span>Submit for Featured</span>
                       </Button>
                     )}
                     
@@ -306,15 +289,15 @@ export const MyClassesManager: React.FC = () => {
                         variant="outline"
                         size="sm"
                         onClick={() => handleCancelClass(danceClass.id)}
-                        className="flex items-center space-x-1 flex-1 lg:flex-none text-orange-600 hover:text-orange-700 hover:bg-orange-50 min-h-[44px] touch-manipulation"
+                        className="flex items-center space-x-1 flex-1 lg:flex-none text-red-600 hover:text-red-700 hover:bg-red-50 min-h-[44px] touch-manipulation"
                       >
-                        <Users className="h-4 w-4" />
+                        <X className="h-4 w-4" />
                         <span>Cancel</span>
                       </Button>
                     )}
                     
                     {/* Delete Button */}
-                    <Button
+                    {/* <Button
                       variant="outline"
                       size="sm"
                       onClick={() => handleDeleteClass(danceClass.id)}
@@ -322,7 +305,7 @@ export const MyClassesManager: React.FC = () => {
                     >
                       <Trash2 className="h-4 w-4" />
                       <span>Delete</span>
-                    </Button>
+                    </Button> */}
                   </div>
                 </div>
               </div>

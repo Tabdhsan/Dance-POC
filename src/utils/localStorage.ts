@@ -22,7 +22,6 @@ const DEFAULT_USER_PREFERENCES: UserPreferences = {
  * Default app settings
  */
 const DEFAULT_APP_SETTINGS: AppSettings = {
-  preferredView: 'list',
   filters: {
     styles: [],
     choreographers: [],

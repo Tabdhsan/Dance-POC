@@ -14,21 +14,21 @@ import {
 } from 'lucide-react';
 import { useClassPreferences } from '@/hooks/useUserState';
 import type { DanceClass } from '@/types';
-import { cn } from '@/lib/utils';
+import { cn, formatDateTime } from '@/lib/utils';
+import { useNavigate } from 'react-router-dom';
 
 interface ClassDetailModalProps {
   danceClass: DanceClass | null;
   isOpen: boolean;
   onClose: () => void;
-  onChoreographerClick?: (choreographerId: string) => void;
 }
 
 export const ClassDetailModal: React.FC<ClassDetailModalProps> = ({
   danceClass,
   isOpen,
   onClose,
-  onChoreographerClick
 }) => {
+  const navigate = useNavigate();
   const { 
     toggleInterest, 
     toggleAttending, 
@@ -41,28 +41,7 @@ export const ClassDetailModal: React.FC<ClassDetailModalProps> = ({
     return null;
   }
 
-  // Format date and time with more detail
-  const formatDateTime = (dateTimeString: string) => {
-    const date = new Date(dateTimeString);
-    const dateOptions: Intl.DateTimeFormatOptions = {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    };
-    const timeOptions: Intl.DateTimeFormatOptions = {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true,
-      timeZoneName: 'short'
-    };
-    
-    return {
-      date: date.toLocaleDateString('en-US', dateOptions),
-      time: date.toLocaleTimeString('en-US', timeOptions)
-    };
-  };
-
+  
   const { date, time } = formatDateTime(danceClass.dateTime);
 
   // Handle backdrop click
@@ -74,7 +53,7 @@ export const ClassDetailModal: React.FC<ClassDetailModalProps> = ({
 
   // Handle choreographer click
   const handleChoreographerClick = () => {
-    onChoreographerClick?.(danceClass.choreographerId);
+    navigate(`/choreographer/${danceClass.choreographerUsername}`);
     onClose();
   };
 
@@ -122,7 +101,7 @@ export const ClassDetailModal: React.FC<ClassDetailModalProps> = ({
               />
               
               {/* Status badges */}
-              <div className="absolute top-3 left-3 flex gap-2">
+              <div className="">
                 {danceClass.status === 'featured' && (
                   <span className="bg-primary text-primary-foreground text-sm font-medium px-3 py-1 rounded-full">
                     Featured Class

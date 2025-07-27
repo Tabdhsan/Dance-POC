@@ -7,8 +7,8 @@ import { Label } from '@/components/ui/label';
 import { useUser } from '@/contexts/UserContext';
 import { useClasses } from '@/contexts/ClassContext';
 import type { Choreographer } from '@/types';
-import { Edit3, Save, X, Camera, Globe, Instagram, Youtube, ExternalLink, Play, AlertCircle } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Edit3, Save, X, Camera, Globe, Instagram, Youtube, ExternalLink, Play, AlertCircle, Check } from 'lucide-react';
+import { cn, placeholderImage } from '@/lib/utils';
 import { extractYouTubeVideoId, generateYouTubeEmbedUrl, validateYouTubeUrl } from '@/utils/youtubeUtils';
 
 export const Profile: React.FC = () => {
@@ -19,6 +19,8 @@ export const Profile: React.FC = () => {
   const [editForm, setEditForm] = useState<Choreographer>({} as Choreographer);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
   const [videoError, setVideoError] = useState<string | null>(null);
+  const [photoEditMode, setPhotoEditMode] = useState(false);
+  const [photoUrl, setPhotoUrl] = useState('');
 
   // Get user's classes
   const userClasses = classes.filter(cls => cls.choreographerId === currentUser?.id);
@@ -40,6 +42,8 @@ export const Profile: React.FC = () => {
     setEditForm(currentUser as Choreographer);
     setSaveStatus('idle');
     setVideoError(null);
+    setPhotoEditMode(false);
+    setPhotoUrl('');
   };
 
   const handleInputChange = (field: string, value: string | string[]) => {
@@ -99,9 +103,23 @@ export const Profile: React.FC = () => {
   };
 
   // Helper function to get placeholder profile image
-  const getPlaceholderImage = (name: string): string => {
-    const encodedName = encodeURIComponent(name);
-    return `https://source.unsplash.com/400x400/?dancer,portrait&name=${encodedName}`;
+  const getPlaceholderImage = (): string => {
+    return placeholderImage
+  };
+
+  const handleChangePhoto = () => {
+    setPhotoEditMode(true);
+    setPhotoUrl(editForm.profilePhoto || '');
+  };
+
+  const handleSavePhoto = () => {
+    handleInputChange('profilePhoto', photoUrl);
+    setPhotoEditMode(false);
+  };
+
+  const handleCancelPhotoEdit = () => {
+    setPhotoEditMode(false);
+    setPhotoUrl(editForm.profilePhoto || '');
   };
 
   // Handle iframe load error
@@ -118,7 +136,7 @@ export const Profile: React.FC = () => {
   }
 
   const user = currentUser as Choreographer;
-  const profileImage = user.profilePhoto || getPlaceholderImage(user.name);
+  const profileImage = (editMode ? editForm.profilePhoto : user.profilePhoto) || getPlaceholderImage();
   const youtubeVideoId = user.featuredVideo ? getYouTubeVideoId(user.featuredVideo) : null;
 
   return (
@@ -149,22 +167,68 @@ export const Profile: React.FC = () => {
                 src={profileImage} 
                 alt={user.name}
                 className="w-full h-full object-cover"
-                onError={(e) => {
-                  // Fallback to placeholder if image fails to load
-                  const target = e.target as HTMLImageElement;
-                  target.src = getPlaceholderImage(user.name);
-                }}
               />
             </div>
-            {editMode && (
+            {editMode && !photoEditMode && (
               <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-lg">
-                <Button variant="secondary" size="sm">
+                <Button variant="secondary" size="sm" onClick={handleChangePhoto}>
                   <Camera className="w-4 h-4 mr-2" />
                   Change Photo
                 </Button>
               </div>
             )}
           </div>
+          
+          {/* Photo Edit Mode */}
+          {photoEditMode && (
+            <div className="mt-4 space-y-3">
+              <div className="space-y-2">
+                <Label htmlFor="photoUrl" className="text-sm font-medium">
+                  Photo URL
+                </Label>
+                <Input
+                  id="photoUrl"
+                  type="url"
+                  value={photoUrl}
+                  onChange={(e) => setPhotoUrl(e.target.value)}
+                  placeholder="Enter image URL (e.g., https://example.com/photo.jpg)"
+                />
+              </div>
+              
+              {/* Preview */}
+              {photoUrl && (
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Preview</Label>
+                  <div className="aspect-square w-24 rounded-lg overflow-hidden bg-muted border">
+                    <img 
+                      src={photoUrl} 
+                      alt="Preview"
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                      }}
+                      onLoad={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'block';
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+              
+              <div className="flex gap-2">
+                <Button size="sm" onClick={handleSavePhoto} className="flex-1">
+                  <Check className="w-4 h-4 mr-2" />
+                  Save Photo
+                </Button>
+                <Button size="sm" variant="outline" onClick={handleCancelPhotoEdit}>
+                  <X className="w-4 h-4 mr-2" />
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Profile Details Section */}
@@ -345,7 +409,7 @@ export const Profile: React.FC = () => {
                     <div className="flex items-center gap-3">
                       <Youtube className="w-4 h-4 text-muted-foreground" />
                       <a 
-                        href={`https://youtube.com/${user.socialLinks.youtube}`}
+                        href={`https://youtube.com/@${user.socialLinks.youtube}`}
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="text-primary hover:underline"

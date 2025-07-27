@@ -41,7 +41,6 @@ const initialState: PreferencesState = {
     favoritedChoreographers: []
   },
   appSettings: {
-    preferredView: 'list',
     filters: {
       styles: [],
       choreographers: [],
@@ -135,7 +134,6 @@ interface PreferencesContextType {
   toggleClassInterest: (classId: string) => boolean;
   toggleClassAttending: (classId: string) => boolean;
   toggleChoreographerFavorite: (choreographerId: string) => boolean;
-  updatePreferredView: (view: 'list' | 'calendar') => void;
   updateFilters: (filters: AppSettings['filters']) => void;
   updateCurrentUser: (userId: string) => void;
   clearAllData: () => void;
@@ -224,12 +222,6 @@ export const PreferencesProvider: React.FC<PreferencesProviderProps> = ({ childr
     return newStatus;
   };
 
-  // Update preferred view
-  const updatePreferredView = (view: 'list' | 'calendar') => {
-    const updatedSettings = { ...state.appSettings, preferredView: view };
-    dispatch({ type: 'SET_APP_SETTINGS', payload: updatedSettings });
-  };
-
   // Update filters
   const updateFilters = (filters: AppSettings['filters']) => {
     const updatedSettings = { ...state.appSettings, filters };
@@ -270,7 +262,6 @@ export const PreferencesProvider: React.FC<PreferencesProviderProps> = ({ childr
     toggleClassInterest,
     toggleClassAttending,
     toggleChoreographerFavorite,
-    updatePreferredView,
     updateFilters,
     updateCurrentUser,
     clearAllData,

@@ -55,7 +55,7 @@ export const loadUsers = async (): Promise<User[]> => {
     const allUsers = [...usersData.users];
     
     choreographersData.choreographers.forEach(choreo => {
-      const existingIndex = allUsers.findIndex(user => user.id === choreo.id);
+      const existingIndex = allUsers.findIndex(user => user.username === choreo.username);
       if (existingIndex >= 0) {
         // Replace existing user with more complete choreographer data
         allUsers[existingIndex] = choreo;
