@@ -11,6 +11,12 @@ import { Settings } from '@/pages/Settings';
 import { Profile } from '@/pages/Profile';
 import { ChoreographerProfile } from '@/pages/ChoreographerProfile';
 import { useUserState } from '@/hooks/useUserState';
+import setupLocatorUI from "@locator/runtime";
+
+if (import.meta.env.DEV) {
+  console.log("Setting up Locator UI");
+	setupLocatorUI();
+}
 
 // Loading component
 const LoadingScreen: React.FC = () => (
