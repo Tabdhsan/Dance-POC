@@ -249,7 +249,7 @@ export const ClassListByDate: React.FC<ClassListByDateProps> = ({
     return (
       <div className={cn("text-center py-12", className)}>
         <div className="text-muted-foreground">
-          <div className="text-6xl mb-4">🕺</div>
+          {/* <div className="text-6xl mb-4">🕺</div> */}
           <h3 className="text-lg font-medium mb-2">No Classes Found</h3>
           <p className="text-sm">{emptyMessage}</p>
         </div>

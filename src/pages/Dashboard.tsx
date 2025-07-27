@@ -52,9 +52,9 @@ export const Dashboard: React.FC = () => {
               }
             </p>
           </div>
-          <div className="hidden sm:block text-4xl sm:text-6xl opacity-20 ml-4">
+          {/* <div className="hidden sm:block text-4xl sm:text-6xl opacity-20 ml-4">
             🕺
-          </div>
+          </div> */}
         </div>
       </div>
 

@@ -79,9 +79,9 @@ export const ClassCard: React.FC<ClassCardProps> = ({
         )}>
           {/* Unsplash placeholder image */}
           <img
-            src={placeholderImage}
+            src='https://idsb.tmgrup.com.tr/ly/uploads/images/2024/04/09/thumbs/800x531/323101.jpg'
             alt="Dance class placeholder"
-            className="w-full h-full object-cover opacity-60"
+            className="bg-whitew-full h-full object-cover opacity-60"
             onError={(e) => {
               // Fallback to icon if Unsplash fails
               e.currentTarget.style.display = 'none';
