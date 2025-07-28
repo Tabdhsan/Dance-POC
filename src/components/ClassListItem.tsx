@@ -53,7 +53,8 @@ export const ClassListItem: React.FC<{
     return (
       <div className={cn(
         "bg-card text-card-foreground rounded-lg border p-4 hover:shadow-md transition-shadow duration-200 cursor-pointer",
-        danceClass.status === 'cancelled' && "opacity-80"
+        danceClass.status === 'cancelled' && "opacity-80",
+        danceClass.status === 'featured' && "ring-2 ring-blue-500/50"
       )} onClick={handleViewDetails}>
         <div className="flex items-center gap-4">
           {/* Time and Date */}

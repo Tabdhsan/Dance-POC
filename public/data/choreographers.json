@@ -2,70 +2,65 @@
   "choreographers": [
     {
       "id": "choreo-001",
-      "name": "Alex Rivera",
+      "name": "Billy Cohen",
       "role": "choreographer",
-      "username": "alexrivera",
-      "pronouns": "she/her",
-      "bio": "Contemporary dance artist with 10+ years of experience in performance and teaching. Specializes in emotional storytelling through movement and creating safe spaces for artistic expression. Former company member of several contemporary dance companies including Axis Dance Theatre and Alvin Ailey American Dance Theater.",
-      "profilePhoto": "/images/alex-rivera.jpg",
-      "website": "https://alexrivera.dance",
+      "username": "billycohen",
+      "pronouns": "he/him",
+      "bio": "Billy Cohen, hailing from the Greater Boston area, started his dance training with hip-hop at the age of six with his identical twin brother, and continued his training in ballet and modern at Hofstra University while receiving a B.S. Degree in Dance Education.",
       "socialLinks": {
-        "instagram": "@alexrivera_dance",
-        "youtube": "AlexRiveraDance",
-        "website": "https://alexrivera.dance"
+        "instagram": "@billycohen_"
       },
-      "featuredVideo": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "profilePhoto": "/images/billy.jpg",
+      "featuredVideo": "https://www.youtube.com/watch?v=HoT8RSbYhbM",
       "achievements": [
-        "Alvin Ailey American Dance Theater Company Member (2018-2022)",
-        "Winner - Contemporary Choreography Award 2023",
-        "Featured in Dance Magazine 'Rising Stars' 2021"
+        "bloc NYC, bloc LA",
+        "Broadway Dance Center - Tutting (Mondays)",
+        "BTS | JBalvin & Bad Bunny | Marvelous Mrs Maisel | Vogue | etc"
       ],
-      "teachingStyle": "Alex focuses on creating an inclusive environment where dancers can explore their emotional range through movement. Her classes emphasize technique while encouraging personal artistic expression.",
+      "teachingStyle": "Billy Cohen, hailing from the Greater Boston area, started his dance training with hip-hop at the age of six with his identical twin brother, and continued his training in ballet and modern at Hofstra University while receiving a B.S. Degree in Dance Education.",
       "upcomingClasses": ["class-001", "class-003", "class-006"]
     },
     {
       "id": "choreo-002", 
-      "name": "Jordan Kim",
+      "name": "Phil Colgan",
       "role": "choreographer",
-      "username": "jordankim",
+      "username": "philcolgan",
       "pronouns": "he/him",
-      "bio": "Hip-hop choreographer and cultural educator dedicated to preserving street dance authenticity while pushing creative boundaries. Trained in Los Angeles and New York, now sharing knowledge through workshops and battles. Specializes in multiple hip-hop styles including popping, locking, breaking, and house dance.",
-      "profilePhoto": "/images/jordan-kim.jpg",
-      "website": "https://jordankim.dance",
+      "bio": "Phil Colgan is a choreographer, performer, and dance educator born and raised in NYC. Phil won a pre-show on-stage dance contest at the Broadway revival of Grease in 1997 and hasn't shut up about it since. ",
+      "website": "https://philcolgan.com",
       "socialLinks": {
-        "instagram": "@jordankim_hiphop",
-        "tiktok": "@jordankim_moves",
-        "youtube": "JordanKimDance"
+        "instagram": "@philcolgan",
+        "tiktok": "@philcolgan",
+        "youtube": "PhilColgan"
       },
+      "profilePhoto": "/images/phil.jpg",
       "featuredVideo": "https://youtu.be/9bZkp7q19f0",
       "achievements": [
-        "World Hip-Hop Dance Championship Finalist 2022",
-        "Choreographer for major music videos and commercials",
-        "Founder of 'Authentic Movement' workshop series"
+        "Represented by Daniel Hoff Agency Inc",
+        "Teaches at Broadway Dance Center and Steps on Broadway",
+        "Hamilton | & Juliet | New York New York"
       ],
-      "teachingStyle": "Jordan brings authentic street dance culture to every class, emphasizing the history and community aspects of hip-hop while teaching cutting-edge choreography. His classes are high-energy and welcoming to all skill levels.",
+      "teachingStyle": "Phil's class lives in a cross-section of theatricality, musicality, style/technique, and showmanship. After a jazz-based warm-up structured to engage the body and focus minds, dancers will learn choreography in one of the various styles that musical theater requires of them in the contemporary landscape. Phil aims to help dancers understand how music and its intricacy can inform character and storytelling, all while giving them the space to explore different ways of approaching theater dance—and hopefully having fun on the way.",
       "upcomingClasses": ["class-002", "class-005", "class-007", "class-009"]
     },
     {
       "id": "choreo-003",
-      "name": "Maria Santos",
+      "name": "Madison Hilligoss",
       "role": "choreographer", 
-      "username": "maria",
+      "username": "madisonhilligoss",
       "pronouns": "she/her",
-      "bio": "Classically trained ballet instructor and modern dance choreographer with over 15 years of teaching experience. Graduated from the Royal Academy of Dance and has performed with prestigious ballet companies worldwide. Now focuses on making classical dance accessible to adult beginners while maintaining technical excellence.",
-      "profilePhoto": "/images/maria-santos.jpg",
-      "website": "https://mariasantos.ballet",
+      "bio": "I'm a NYC-based multidisciplinary artist, teacher, and creative hailing from Minnesota— my primary mode of expression is tap dance. My personal and professional interests converge around acoustic, embodied, and percussive music-making, collective identity, arts education, and language.",
+      "website": "https://madisonhilligoss.com/",
+      "profilePhoto": "/images/madison.jpg",
       "socialLinks": {
-        "instagram": "@mariasantos_ballet",
-        "youtube": "MariaSantosBallet"
+        "instagram": "@madisonhilligoss",
+        "youtube": "MadisonHilligoss"
       },
-      "featuredVideo": "https://www.youtube.com/watch?v=JGwWNGJdvx8",
+      "featuredVideo": "https://youtu.be/u2lNrTXGKvo",
       "achievements": [
-        "Royal Academy of Dance Graduate with Distinction",
-        "Principal Dancer - National Ballet Company (2010-2018)",
-        "Certified in RAD Teaching Method"
+        "The Tap Dance Kid | Lights Out: Nat King Cole | Funny Girl"
       ],
-      "teachingStyle": "Maria creates a supportive environment for dancers of all ages and backgrounds to discover the beauty of classical dance. Her classes focus on proper technique, musicality, and the joy of movement.",
+      "teachingStyle": "My classes are all rooted in the premise that as tap dancers, we are musicians, so our responsibility is to make and respond to music with intention and curiosity. Class will typically begin with a warm up to build strength, coordination, and muscle memory, followed by a series of call-and-response exercises in the center with a focus on rhythmic accuracy and alignment/technique. The remainder of class includes a combination of across-the-floor exercises, technique drills, sometimes improvisation, and typically the last section of class is dedicated to learning a combination to practice retaining and performing choreography. I strive to create a welcoming class environment that is conducive to learning, experimenting, and growing. All are welcome in my class.",
       "upcomingClasses": ["class-004", "class-008", "class-010"]
     }
   ]
