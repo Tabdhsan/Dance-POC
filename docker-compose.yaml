@@ -1,0 +1,9 @@
+version: "3"
+services:
+  dance-poc: # change this
+    build: .
+    container_name: dance-poc # change this
+    ports:
+      - "5678:80" # change left side as needed
+    restart: unless-stopped
+
