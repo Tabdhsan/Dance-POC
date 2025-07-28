@@ -66,7 +66,7 @@ export const ChoreographerProfile: React.FC = () => {
   const youtubeVideoId = choreographer.featuredVideo ? extractYouTubeVideoId(choreographer.featuredVideo) : null;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 mr-[4rem]">
       {/* Header with Back Button */}
       <div className="flex items-center gap-4">
         <Button variant="ghost" size="sm" onClick={() => navigate(-1)}>
@@ -82,9 +82,9 @@ export const ChoreographerProfile: React.FC = () => {
       </div>
 
       {/* Profile Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="flex flex-col lg:flex-row gap-8">
         {/* Profile Photo Section */}
-        <div className="lg:col-span-1">
+        <div className="w-full max-w-[25rem]">
           <div className="aspect-square rounded-lg overflow-hidden bg-muted">
             <img 
               src={profileImage} 
@@ -95,7 +95,7 @@ export const ChoreographerProfile: React.FC = () => {
         </div>
 
         {/* Profile Details Section */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="space-y-6">
           {/* Basic Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-4">
