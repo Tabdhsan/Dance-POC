@@ -8,7 +8,8 @@ import {
   Heart, 
   UserCheck, 
   ExternalLink,
-  User
+  User,
+  Sparkles
 } from 'lucide-react';
 import type { ClassCardProps } from '@/types';
 import { cn, formatDateTime } from '@/lib/utils';
@@ -112,6 +113,13 @@ export const ClassCard: React.FC<ClassCardProps> = ({
             Featured
           </span>
         </div> */}
+        {/* Featured badge with sparkles */}
+        <div className="absolute top-3 left-3 flex gap-2">
+          <span className="bg-primary text-primary-foreground text-xs font-medium px-3 py-1 rounded-full shadow-lg flex items-center gap-1">
+            <Sparkles className="h-3 w-3" />
+            Featured
+          </span>
+        </div>
       </div>
       )}
 
@@ -172,9 +180,10 @@ export const ClassCard: React.FC<ClassCardProps> = ({
         {/* Dance Styles */}
         <div className="flex flex-wrap gap-1">
           {/* Status badges */}
-          {danceClass.status === 'featured' && (
+          {danceClass.status === 'featured' && !showFlyer && (
           <div className="flex gap-2">
-            <span className="bg-primary text-primary-foreground text-xs font-medium px-2 py-1 rounded-full">
+            <span className="bg-primary text-primary-foreground text-xs font-medium px-2 py-1 rounded-full shadow-lg flex items-center gap-1">
+              <Sparkles className="h-3 w-3" />
               Featured
             </span>
           </div>
