@@ -6,14 +6,14 @@ import { useUserState } from '@/hooks/useUserState';
 import { cn } from '@/lib/utils';
 
 export const RoleToggle: React.FC = () => {
-  const { currentUser, toggleRole, isChoreographer } = useUserState();
+  const { currentUser, switchRole, isChoreographer } = useUserState();
 
   if (!currentUser) return null;
 
   return (
     <div className="flex items-center gap-2">
       <Button
-        onClick={toggleRole}
+        onClick={() => switchRole(isChoreographer() ? "dancer" : "choreographer")}
         variant="outline"
         size="sm"
         className={cn(
