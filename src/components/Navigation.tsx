@@ -22,7 +22,6 @@ import { useUserState } from '@/hooks/useUserState';
 import { RoleToggle } from './RoleToggle';
 
 export const Navigation: React.FC = () => {
-  // const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const {currentUser, isChoreographer } = useUserState();
   const location = useLocation();
@@ -49,19 +48,9 @@ export const Navigation: React.FC = () => {
     return location.pathname === path;
   };
 
-  // // Toggle mobile menu
-  // const toggleMobileMenu = () => {
-  //   setIsMobileMenuOpen(!isMobileMenuOpen);
-  // };
-
-  // // Close mobile menu
-  // const closeMobileMenu = () => {
-  //   setIsMobileMenuOpen(false);
-  // };
-
   return (
     <>
-    <header className="fixed top-0 z-40 flex h-16 w-full items-center border-b border-gray-200 bg-white px-4 sm:px-6">
+    <header className="fixed top-0 z-40 flex h-16 w-full items-center border-b border-border bg-card/95 backdrop-blur-sm px-4 sm:px-6 shadow-sm">
 				<div className="flex w-full items-center justify-between">
 					{/* Left side */}
 					<div className="flex items-center gap-4">
@@ -69,7 +58,7 @@ export const Navigation: React.FC = () => {
 							variant="ghost"
 							size="sm"
 							onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-							className="lg:hidden"
+							className="lg:hidden hover:bg-accent/10 hover:text-accent"
 						>
 							<Menu className="size-5" />
 						</Button>
@@ -77,7 +66,7 @@ export const Navigation: React.FC = () => {
 						<div className="flex items-center space-x-4">
              <Link 
                to="/dashboard" 
-               className="text-xl font-bold text-foreground hover:text-primary transition-colors"
+               className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent hover:from-accent hover:to-primary transition-all duration-300"
                onClick={() => setIsSidebarOpen(false)}
              >
                DanceApp
@@ -94,21 +83,21 @@ export const Navigation: React.FC = () => {
               {/* Profile Dropdown */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="flex items-center space-x-2">
+                  <Button variant="ghost" size="sm" className="flex items-center space-x-2 hover:bg-accent/10 hover:text-accent border border-transparent hover:border-accent/20">
                     <User className="h-4 w-4" />
                     <span className="max-w-32 truncate">{currentUser?.name || 'User'}</span>
                     <ChevronDown className="h-3 w-3" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuContent align="end" className="w-48 shadow-accent">
                   <DropdownMenuItem asChild>
-                    <Link to="/profile" className="flex items-center space-x-2">
+                    <Link to="/profile" className="flex items-center space-x-2 hover:bg-accent/10 hover:text-accent">
                       <User className="h-4 w-4" />
                       <span>My Profile</span>
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link to="/settings" className="flex items-center space-x-2">
+                    <Link to="/settings" className="flex items-center space-x-2 hover:bg-accent/10 hover:text-accent">
                       <Settings className="h-4 w-4" />
                       <span>Settings</span>
                     </Link>
@@ -122,7 +111,7 @@ export const Navigation: React.FC = () => {
 
 			{/* Sidebar */}
 			<aside
-				className={`fixed left-0 top-16 z-30 h-[calc(100vh-4rem)] w-64 transform border-r border-gray-200 bg-white transition-transform duration-300 ease-in-out ${
+				className={`fixed left-0 top-16 z-30 h-[calc(100vh-4rem)] w-64 transform border-r border-border bg-card/95 backdrop-blur-sm transition-transform duration-300 ease-in-out shadow-lg ${
 					isSidebarOpen ? "translate-x-0" : "-translate-x-full"
 				} lg:translate-x-0`}
 			>
@@ -135,10 +124,10 @@ export const Navigation: React.FC = () => {
                   key={item.path}
                   to={item.path}
                   onClick={() => setIsSidebarOpen(false)}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover-lift ${
                     isActivePath(item.path)
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                      ? 'bg-accent text-accent-foreground shadow-accent/20 shadow-md border border-accent/20'
+                      : 'text-muted-foreground hover:text-accent hover:bg-accent/10 border border-transparent hover:border-accent/20'
                   }`}
                 >
                   <Icon className="h-4 w-4" />
@@ -146,15 +135,15 @@ export const Navigation: React.FC = () => {
                 </Link>
               );
             })}
-            <div className="flex flex-col gap-2 sm:hidden">
+            <div className="flex flex-col gap-2 sm:hidden border-t border-border pt-4 mt-4">
             <Link
                   key={'/profile'}
                   to={'/profile'}
                   onClick={() => setIsSidebarOpen(false)}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover-lift ${
                     isActivePath('/profile')
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                      ? 'bg-accent text-accent-foreground shadow-accent/20 shadow-md border border-accent/20'
+                      : 'text-muted-foreground hover:text-accent hover:bg-accent/10 border border-transparent hover:border-accent/20'
                   }`}
                 >
                   <User className="h-4 w-4" />
@@ -164,10 +153,10 @@ export const Navigation: React.FC = () => {
                   key={'/settings'}
                   to={'/settings'}
                   onClick={() => setIsSidebarOpen(false)}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover-lift ${
                     isActivePath('/settings')
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                      ? 'bg-accent text-accent-foreground shadow-accent/20 shadow-md border border-accent/20'
+                      : 'text-muted-foreground hover:text-accent hover:bg-accent/10 border border-transparent hover:border-accent/20'
                   }`}
                 >
                   <Settings className="h-4 w-4" />
@@ -181,155 +170,10 @@ export const Navigation: React.FC = () => {
 			{/* Sidebar Overlay */}
 			{isSidebarOpen && (
 				<div
-					className="fixed inset-0 z-20 bg-gray-950/50 lg:hidden"
+					className="fixed inset-0 z-20 bg-primary/20 backdrop-blur-sm lg:hidden"
 					onClick={() => setIsSidebarOpen(false)}
 				/>
 			)}
     </>
-
-  )
-
-  // return (
-  //   <nav className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-  //     <div className="container mx-auto px-4">
-  //       <div className="flex h-16 items-center justify-between">
-  //         {/* Logo/Brand */}
-  //         <div className="flex items-center space-x-4">
-  //           <Link 
-  //             to="/dashboard" 
-  //             className="text-xl font-bold text-foreground hover:text-primary transition-colors"
-  //             onClick={closeMobileMenu}
-  //           >
-  //             DanceApp
-  //           </Link>
-  //         </div>
-
-  //         {/* Desktop Navigation */}
-  //         {/* <div className="hidden md:flex items-center space-x-6">
-  //           {navigationItems.map((item) => {
-  //             const Icon = item.icon;
-  //             return (
-  //               <Link
-  //                 key={item.path}
-  //                 to={item.path}
-  //                 className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-  //                   isActivePath(item.path)
-  //                     ? 'bg-primary text-primary-foreground'
-  //                     : 'text-muted-foreground hover:text-foreground hover:bg-accent'
-  //                 }`}
-  //               >
-  //                 <Icon className="h-4 w-4" />
-  //                 <span>{item.label}</span>
-  //               </Link>
-  //             );
-  //           })}
-  //         </div> */}
-
-  //         {/* Desktop Right Side */}
-  //         <div className="hidden md:flex items-center space-x-4">
-  //           {/* Role Toggle */}
-  //           <RoleToggle />
-            
-  //           {/* Profile Dropdown */}
-  //           <DropdownMenu>
-  //             <DropdownMenuTrigger asChild>
-  //               <Button variant="ghost" size="sm" className="flex items-center space-x-2">
-  //                 <User className="h-4 w-4" />
-  //                 <span className="max-w-32 truncate">{currentUser?.name || 'User'}</span>
-  //                 <ChevronDown className="h-3 w-3" />
-  //               </Button>
-  //             </DropdownMenuTrigger>
-  //             <DropdownMenuContent align="end" className="w-48">
-  //               <DropdownMenuItem asChild>
-  //                 <Link to="/profile" className="flex items-center space-x-2">
-  //                   <User className="h-4 w-4" />
-  //                   <span>My Profile</span>
-  //                 </Link>
-  //               </DropdownMenuItem>
-  //               <DropdownMenuItem asChild>
-  //                 <Link to="/settings" className="flex items-center space-x-2">
-  //                   <Settings className="h-4 w-4" />
-  //                   <span>Settings</span>
-  //                 </Link>
-  //               </DropdownMenuItem>
-  //             </DropdownMenuContent>
-  //           </DropdownMenu>
-  //         </div>
-
-  //         {/* Mobile Menu Button */}
-  //         <div className="md:hidden">
-  //           <Button
-  //             variant="ghost"
-  //             size="sm"
-  //             onClick={toggleMobileMenu}
-  //             className="h-11 w-11 p-0 touch-manipulation"
-  //             aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-  //           >
-  //             {isMobileMenuOpen ? (
-  //               <X className="h-6 w-6" />
-  //             ) : (
-  //               <Menu className="h-6 w-6" />
-  //             )}
-  //           </Button>
-  //         </div>
-  //       </div>
-
-  //       {/* Mobile Navigation Menu */}
-  //       {isMobileMenuOpen && (
-  //         <div className="md:hidden border-t border-border">
-  //           <div className="px-2 pt-2 pb-3 space-y-1">
-  //             {/* {navigationItems.map((item) => {
-  //               const Icon = item.icon;
-  //               return (
-  //                 <Link
-  //                   key={item.path}
-  //                   to={item.path}
-  //                   onClick={closeMobileMenu}
-  //                   className={`flex items-center space-x-3 px-4 py-3 rounded-md text-base font-medium transition-colors touch-manipulation min-h-[44px] ${
-  //                     isActivePath(item.path)
-  //                       ? 'bg-primary text-primary-foreground'
-  //                       : 'text-muted-foreground hover:text-foreground hover:bg-accent'
-  //                   }`}
-  //                 >
-  //                   <Icon className="h-5 w-5" />
-  //                   <span>{item.label}</span>
-  //                 </Link>
-  //               );
-  //             })} */}
-              
-  //             {/* Mobile Role Toggle */}
-  //             <div className="px-4 py-3">
-  //               <RoleToggle />
-  //             </div>
-              
-  //             {/* Mobile Profile Links */}
-  //             <div className="border-t border-border pt-2 mt-2">
-  //               <div className="px-4 py-2 text-sm font-medium text-muted-foreground">
-  //                 {currentUser?.name || 'User'} ({currentUser?.role || 'unknown'})
-  //               </div>
-                
-  //               <Link
-  //                 to="/profile"
-  //                 onClick={closeMobileMenu}
-  //                 className="flex items-center space-x-3 px-4 py-3 rounded-md text-base font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors touch-manipulation min-h-[44px]"
-  //               >
-  //                 <User className="h-5 w-5" />
-  //                 <span>My Profile</span>
-  //               </Link>
-                
-  //               <Link
-  //                 to="/settings"
-  //                 onClick={closeMobileMenu}
-  //                 className="flex items-center space-x-3 px-4 py-3 rounded-md text-base font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors touch-manipulation min-h-[44px]"
-  //               >
-  //                 <Settings className="h-5 w-5" />
-  //                 <span>Settings</span>
-  //               </Link>
-  //             </div>
-  //           </div>
-  //         </div>
-  //       )}
-  //     </div>
-  //   </nav>
-  // );
+  );
 };
