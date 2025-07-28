@@ -25,7 +25,7 @@ export const ClassCard: React.FC<ClassCardProps> = ({
 }) => {
   const navigate = useNavigate();
   // Format date and time
-  
+  console.log(danceClass.title, showFlyer, danceClass.flyer, danceClass.status);
   const { date, time } = formatDateTime(danceClass.dateTime);
 
   // Handle interest toggle
@@ -58,12 +58,12 @@ export const ClassCard: React.FC<ClassCardProps> = ({
 
       {/* Class Image/Flyer */}
       {danceClass.status === 'featured' && showFlyer && (
-      <div className="relative">
+      <div className="relative bg-gray-100">
         {danceClass.flyer ? (
           <img
             src={danceClass.flyer}
             alt={`${danceClass.title} flyer`}
-            className="w-full h-48 object-cover rounded-t-lg"
+            className="w-full h-48 object-contain rounded-t-lg object-top"
             onError={(e) => {
               // Fallback to placeholder if image fails to load
               e.currentTarget.style.display = 'none';
